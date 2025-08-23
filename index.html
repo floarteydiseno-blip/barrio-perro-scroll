@@ -3,75 +3,102 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Barrio Perro – Mask + Scroll</title>
+  <title>Barrio Perro – Reveal on Scroll</title>
   <style>
-    /* Página larga para que exista scroll */
+    :root{
+      --overlay: #ffffff;      /* color alrededor del hueco */
+      --minHole: 50;           /* tamaño inicial del hueco (vmin) */
+      --maxHole: 160;          /* tamaño máximo del hueco (vmin) */
+      --speed:   0.10;         /* sensibilidad del scroll (ajusta a gusto) */
+    }
+
     html, body {
       margin: 0;
-      height: 200vh;
-      background: #000; /* color de fondo mientras carga el video */
+      height: 220vh;          /* deja espacio para scrollear */
+      background: #000;
     }
 
     /* Video de fondo */
-    #video-bg {
+    #video-bg{
       position: fixed;
-      inset: 0;             /* top:0 right:0 bottom:0 left:0 */
+      inset: 0;
       width: 100vw;
       height: 100vh;
       object-fit: cover;
       z-index: 1;
-      background: #000;     /* si el video no carga, verás negro (útil para detectar) */
+      background:#000;
     }
 
-    /* Capa sólida que tapa todo y recorta el logo como ventana */
-    #mask-layer {
+    /* Capa sólida con “hueco” (logo como máscara) */
+    #reveal{
       position: fixed;
       inset: 0;
       z-index: 2;
-      background: #ffffff;  /* cambia el color sólido aquí (#000, #fff, etc.) */
+      background: var(--overlay);
 
-      /* La magia de la máscara (asegúrate que la ruta exista) */
+      /* ✅ MÁSCARA CON ARCHIVO SVG (LOGO BLANCO, FONDO NEGRO) */
       -webkit-mask-image: url('logotipo_barrioperro_02.svg');
       mask-image: url('logotipo_barrioperro_02.svg');
       -webkit-mask-repeat: no-repeat;
       mask-repeat: no-repeat;
       -webkit-mask-position: center;
       mask-position: center;
-      /* Tamaño del “hueco” del logo */
-      -webkit-mask-size: min(70vmin, 80%);
-      mask-size: min(70vmin, 80%);
-      transition: transform 0.3s ease;
+
+      /* tamaño del hueco controlado por CSS var */
+      -webkit-mask-size: calc(var(--hole, var(--minHole)) * 1vmin);
+      mask-size:          calc(var(--hole, var(--minHole)) * 1vmin);
+
+      /* suavidad */
+      transition: -webkit-mask-size 0.18s ease-out, mask-size 0.18s ease-out;
+    }
+
+    /* 🔄 Fallback opcional (círculo) si no hay soporte de mask-image con URL */
+    @supports not (-webkit-mask-image: url("x")) {
+      #reveal{
+        /* recorte circular que crece (el resto sigue siendo overlay) */
+        clip-path: circle(calc(var(--hole, var(--minHole)) * 0.5vmin) at 50% 50%);
+        /* Para invertir (mostrar fuera del círculo) puedes envolver el overlay en un pseudo-elemento,
+           pero dejamos esto como backup visual simple en navegadores viejos */
+      }
     }
   </style>
 </head>
 <body>
 
-  <!-- VIDEO -->
-  <video id="video-bg" autoplay muted playsinline loop preload="auto" poster="poster.jpg">
-    <source src="barrio-perro-scroll/HERO.mp4" type="video/mp4" />
-    <!-- Si no carga, verás el background negro del video -->
+  <video id="video-bg" autoplay muted loop playsinline preload="auto" poster="poster.jpg">
+    <source src="HERO WEB Agosto25.mp4" type="video/mp4" />
   </video>
 
-  <!-- CAPA SÓLIDA CON MÁSCARA DEL LOGO -->
-  <div id="mask-layer" aria-hidden="true"></div>
+  <div id="reveal" aria-hidden="true"></div>
 
   <script>
-    // Efecto scroll: agranda el “hueco” del logo escalando la capa
-    window.addEventListener('scroll', function () {
-      const scrollY = window.scrollY || document.documentElement.scrollTop || 0;
-      const scale = 1 + scrollY * 0.003; // ajusta velocidad si quieres
-      const maskLayer = document.getElementById('mask-layer');
-      if (maskLayer) maskLayer.style.transform = 'scale(' + scale + ')';
-    });
+    (function(){
+      const root = document.documentElement;
+      const min = parseFloat(getComputedStyle(root).getPropertyValue('--minHole')) || 50;
+      const max = parseFloat(getComputedStyle(root).getPropertyValue('--maxHole')) || 160;
+      const speed = parseFloat(getComputedStyle(root).getPropertyValue('--speed')) || 0.1;
 
-    // Logs útiles para depurar en la consola
-    (function debug() {
+      let ticking = false;
+      function onScroll(){
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          const y = window.scrollY || document.documentElement.scrollTop || 0;
+          const next = Math.max(min, Math.min(max, min + y * speed));
+          root.style.setProperty('--hole', String(next));
+          ticking = false;
+        });
+      }
+
+      // init + listeners
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive:true });
+
+      // logs de diagnóstico rápidos (puedes quitarlos)
       const v = document.getElementById('video-bg');
-      v.addEventListener('error', () => console.log('⚠️ Error cargando el video'));
       v.addEventListener('loadeddata', () => console.log('✅ Video cargado'));
-      fetch('assets/logo-mask.svg')
-        .then(r => console.log('SVG status:', r.status))
-        .catch(e => console.log('⚠️ Error al pedir SVG', e));
+      v.addEventListener('error', () => console.log('⚠️ Error al cargar video'));
+      fetch('assets/logo-mask.svg').then(r => console.log('SVG status:', r.status));
     })();
   </script>
 </body>
