@@ -10,7 +10,7 @@
       --overlay: #000000;
 
       /* Tamaño base del hueco (logo) — AJUSTA AQUÍ */
-      --holeBase: 2vmin;   /* más pequeño que antes para que no se vea enorme */
+      --holeBase: 22vmin;   /* más pequeño que antes para que no se vea enorme */
 
       /* Offsets finos del hueco — AJUSTA SI LO VES CORRIDO */
       --dx: 0vmin;          /* + derecha / - izquierda */
@@ -62,12 +62,12 @@
       <!-- Usamos unidades del viewport para tener control fino (px/vmin) -->
       <mask id="revealMask" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse">
         <!-- Fondo blanco: mantiene visible todo el overlay negro -->
-        <rect x="0" y="0" width="33vw" height="33vh" fill="white"/>
+        <rect x="0" y="0" width="100vw" height="100vh" fill="white"/>
         <!-- Logo NEGRO (fondo TRANSPARENTE) centrado y escalable -->
         <!-- Si tu logo sigue viéndose corrido: ajusta --dx y --dy -->
         <image
           href="logo-mask.svg"
-          x="10%" y="10%"
+          x="50%" y="50%"
           preserveAspectRatio="xMidYMid meet"
           style="
             width:  var(--holeBase);
