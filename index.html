@@ -6,21 +6,18 @@
   <title>Barrio Perro – Reveal on Scroll</title>
   <style>
     :root{
-      /* tamaño base del hueco; ajusta a tu gusto */
-      --holeBase: 28vmin;
-      /* escala dinámica del hueco (se modifica con scroll) */
-      --k: 1;
-      /* color del overlay (negro) */
-      --overlay: #000000;
+      --overlay: #000000;  /* color de la pantalla (negro) */
+      --holeBase: 26vmin;  /* tamaño base del hueco */
+      --k: 1;              /* escala dinámica del hueco (se actualiza con scroll) */
     }
 
     html, body {
       margin: 0;
-      height: 220vh;         /* deja “camino” para scrollear */
+      height: 220vh;       /* deja “camino” para scrollear */
       background: #000;
     }
 
-    /* Video de fondo, fijo a pantalla */
+    /* Video fijo de fondo */
     #video-bg{
       position: fixed;
       inset: 0;
@@ -28,7 +25,7 @@
       height: 100vh;
       object-fit: cover;
       z-index: 1;
-      background: #000;
+      background:#000;
     }
 
     /* SVG overlay que tapa TODO y recorta el hueco del logo */
@@ -38,26 +35,25 @@
       width: 100vw;
       height: 100vh;
       z-index: 2;
-      pointer-events: none;  /* no bloquea el scroll */
+      pointer-events: none; /* no bloquea el scroll */
       display: block;
     }
   </style>
 </head>
 <body>
 
-  <!-- Video de fondo (ajusta el src si usas otro nombre/ubicación) -->
+  <!-- Video de fondo -->
   <video id="video-bg" autoplay muted loop playsinline preload="auto" poster="poster.jpg">
     <source src="HERO.mp4" type="video/mp4" />
   </video>
 
-  <!-- Overlay SVG con máscara "knockout": blanco = tapa, negro = hueco -->
+  <!-- Overlay SVG con máscara “knockout”: blanco=tapa, negro=hueco -->
   <svg id="overlay" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
     <defs>
-      <mask id="revealMask" maskUnits="objectBoundingBox">
+      <mask id="revealMask" maskUnits="objectBoundingBox" maskContentUnits="objectBoundingBox">
         <!-- Fondo blanco: el overlay negro será visible en toda el área -->
         <rect x="0" y="0" width="100%" height="100%" fill="white"/>
-        <!-- Logo NEGRO (fondo transparente) centrado; se escala con --k -->
-        <!-- Usa tu archivo de silueta negra: logo-mask.svg en la raíz -->
+        <!-- Logo NEGRO (fondo TRANSPARENTE). Se centra y escala con --k -->
         <image
           href="logo-mask.svg"
           x="50%" y="50%"
@@ -70,7 +66,7 @@
       </mask>
     </defs>
 
-    <!-- Rect negro que tapa todo; la máscara le abre el hueco del logo -->
+    <!-- Rectángulo negro que tapa todo; la máscara le abre el hueco del logo -->
     <rect x="0" y="0" width="100%" height="100%" fill="var(--overlay)" mask="url(#revealMask)"/>
   </svg>
 
@@ -79,8 +75,8 @@
       const root = document.documentElement;
 
       // Ajusta sensibilidad y límites del crecimiento del hueco
-      const MIN = 1.0;     // escala mínima (hueco chico al inicio)
-      const MAX = 6.0;     // escala máxima (ya cubre casi toda la pantalla)
+      const MIN = 1.0;     // escala mínima (hueco pequeño al inicio)
+      const MAX = 6.5;     // escala máxima (ya cubre casi toda la pantalla)
       const SPEED = 0.004; // sensibilidad del scroll
 
       function onScroll(){
@@ -92,7 +88,7 @@
       onScroll();
       window.addEventListener('scroll', onScroll, { passive: true });
 
-      // (Opcional) Oculta el overlay al final para revelar 100% el video
+      // (Opcional) oculta el overlay al final para revelar 100% el video
       const overlay = document.getElementById('overlay');
       overlay.style.transition = 'opacity .3s ease';
       window.addEventListener('scroll', () => {
