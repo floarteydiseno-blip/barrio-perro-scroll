@@ -98,7 +98,7 @@
       const v = document.getElementById('video-bg');
       v.addEventListener('loadeddata', () => console.log('✅ Video cargado'));
       v.addEventListener('error', () => console.log('⚠️ Error al cargar video'));
-      fetch('assets/logo-mask.svg').then(r => console.log('SVG status:', r.status));
+      fetch('logo-mask.svg').then(r => console.log('SVG status:', r.status));
     })();
   </script>
 </body>
