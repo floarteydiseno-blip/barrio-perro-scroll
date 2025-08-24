@@ -23,7 +23,7 @@
     html, body{
       margin: 0;
       /* en lugar de height fija, usa min-height controlada por JS */
-       min-height: var(--docH, 320vh);
+       min-height: var(--docH, 620vh);
        height: auto;
        overflow-y: auto;
      /* height: 540vh;    /*var(--docH, 300vh); /* deja “camino” para scrollear lo cambié de 220 a 360 de nuevo*/
@@ -93,7 +93,7 @@
 (function(){
   // 🔧 Ajusta solo estos 3 diales
   const MIN   = 1.0;     // escala inicial del hueco
-  const MAX   = 100.0;    // cuánto debe crecer hasta salirse de pantalla
+  const MAX   = 100;    // cuánto debe crecer hasta salirse de pantalla
   const SPEED = 0.010;   // sensibilidad del scroll (más alto = abre más rápido)
 
   // Calcula la altura de documento que necesitas para llegar de MIN a MAX
