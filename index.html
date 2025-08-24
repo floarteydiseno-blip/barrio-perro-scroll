@@ -41,8 +41,8 @@
     svg#overlay{
       position: fixed;
       inset: 0;
-      width: 200vw;
-      height: 200vh;
+      width: 100vw;
+      height: 100vh;
       z-index: 2;
       pointer-events: none; /* no bloquea el scroll */
       display: block;
@@ -62,7 +62,7 @@
       <!-- Usamos unidades del viewport para tener control fino (px/vmin) -->
       <mask id="revealMask" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse">
         <!-- Fondo blanco: mantiene visible todo el overlay negro -->
-        <rect x="0" y="0" width="100vw" height="100vh" fill="white"/>
+        <rect x="0" y="0" width="100%" height="100%" fill="white"/>
         <!-- Logo NEGRO (fondo TRANSPARENTE) centrado y escalable -->
         <!-- Si tu logo sigue viéndose corrido: ajusta --dx y --dy -->
         <image
