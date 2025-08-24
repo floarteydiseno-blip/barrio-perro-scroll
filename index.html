@@ -9,7 +9,7 @@
       --overlay: #000000;
 
       /* tamaño base del hueco (ajústalo) */
-      --holeBase: 2vmin;
+      --holeBase: 26vmin;
 
       /* offsets finos del hueco */
       --dx: 0vmin;
@@ -63,12 +63,14 @@
     <defs>
       <!-- 👇 usamos unidades del viewBox (userSpaceOnUse) y llenamos con 100x100 -->
       <mask id="revealMask" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse"
+            style="mask-type: luminance">
             x="0" y="0" width="100" height="100">
         <!-- Fondo blanco: mantiene visible TODO el overlay negro -->
         <rect x="0" y="0" width="100" height="100" fill="white"/>
         <!-- Logo negro (hueco), centrado y escalable -->
         <image
           href="logo-mask.svg"
+          xlink:href="logo-mask.svg"
           x="50" y="50"                           <!-- coord. en viewBox -->
           preserveAspectRatio="xMidYMid meet"    <!-- mantiene proporción -->
           style="
