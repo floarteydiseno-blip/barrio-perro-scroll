@@ -22,7 +22,11 @@
 
     html, body{
       margin: 0;
-      height: 540vh;    /*var(--docH, 300vh); /* deja “camino” para scrollear lo cambié de 220 a 360 de nuevo*/
+      /* en lugar de height fija, usa min-height controlada por JS */
+       min-height: var(--docH, 320vh);
+       height: auto;
+       overflow-y: auto;
+     /* height: 540vh;    /*var(--docH, 300vh); /* deja “camino” para scrollear lo cambié de 220 a 360 de nuevo*/
       background: #000;
     }
 
@@ -86,41 +90,35 @@
   </svg>
 
   <script>
-    (function(){
-      const root = document.documentElement;
+(function(){
+  // 🔧 Ajusta solo estos 3 diales
+  const MIN   = 1.0;     // escala inicial del hueco
+  const MAX   = 12.0;    // cuánto debe crecer hasta salirse de pantalla
+  const SPEED = 0.008;   // sensibilidad del scroll (más alto = abre más rápido)
 
-      // 📏 Límites y sensibilidad del crecimiento del hueco
-      const MIN = 1.0;      // escala mínima (hueco chico al inicio)
-      const MAX = 20;      // escala máxima cambió de 12 A 20
-      const SPEED = 0.008;  // sensibilidad del scroll
-      /*NUEVO
-       // px de scroll necesarios para pasar de MIN a MAX
-  const yNeeded = (MAX - MIN) / SPEED; // en píxeles
+  // Calcula la altura de documento que necesitas para llegar de MIN a MAX
+  function setDocHeight(){
+    const yNeeded = (MAX - MIN) / SPEED;                  // píxeles de scroll necesarios
+    const vhNeeded = 100 + (yNeeded / innerHeight) * 100; // pásalo a vh
+    document.documentElement.style.setProperty('--docH', Math.ceil(vhNeeded) + 'vh');
+  }
 
-  // conviértelo a vh del viewport actual
-  const vhNeeded = 100 + (yNeeded / window.innerHeight) * 100;
-  document.documentElement.style.setProperty('--docH', Math.ceil(vhNeeded) + 'vh');
+  function onScroll(){
+    const y = window.scrollY || document.documentElement.scrollTop || 0;
+    const k = Math.max(MIN, Math.min(MAX, MIN + y * SPEED));
+    document.documentElement.style.setProperty('--k', String(k));
+  }
+
+  // Inicializa
+  setDocHeight();
+  onScroll();
+
+  // Listeners
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', () => { setDocHeight(); onScroll(); });
 })();
-    FIN DE LO NUEVO*/
-      function onScroll(){
-        const y = window.scrollY || document.documentElement.scrollTop || 0;
-        const k = Math.max(MIN, Math.min(MAX, MIN + y * SPEED));
-        root.style.setProperty('--k', String(k));
-      }
+</script>
 
-      // Inicializa y escucha scroll
-      onScroll();
-      window.addEventListener('scroll', onScroll, { passive: true });
 
-      /* (Opcional) fade-out del overlay cuando llega al máximo
-      const overlay = document.getElementById('overlay');
-      overlay.style.transition = 'opacity .3s ease';
-      window.addEventListener('scroll', () => {
-        const y = window.scrollY || 0;
-        const k = Math.max(MIN, Math.min(MAX, MIN + y * SPEED));
-        overlay.style.opacity = (k >= MAX - 0.5) ? '0' : '1';     //le quité el >=-0.5
-      }, { passive:true });*/
-    })();
-  </script>
 </body>
 </html>
