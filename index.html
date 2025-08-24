@@ -9,21 +9,21 @@
       --overlay: #000000;
 
       /* tamaño base del hueco (ajústalo) */
-      --holeBase: 26vmin;
+      --holeBase: 2vmin;
 
-      /* offsets finos del hueco */
-      --dx: 0vmin;
-      --dy: 0vmin;
-
+      /* offsets finos del hueco — AJUSTA SI LO VES CORRIDO */
+      --dx: 0vmin;  /* + derecha / - izquierda */
+      --dy: 0vmin;  /* + abajo / - arriba */
+      /* Escala dinámica (la cambia el scroll) */
       --k: 1;
     }
 
     /* 👇 clave: cubrir pantalla real y evitar desplazamientos laterales */
     html, body{
       margin: 0;
-      min-height: 100dvh;     /* mejor que 100vh en móvil */
-      width: 100%;
-      overflow-x: hidden;
+      /*min-height: 100dvh;     /* mejor que 100vh en móvil */
+      /*width: 100%;
+      overflow-x: hidden;*/
       background: #000;
       height: 220vh;          /* para que haya scroll */
     }
@@ -33,13 +33,13 @@
       position: fixed;
       inset: 0;
       width: 100vw;           /* usa vw */
-      height: 100dvh;         /* usa dvh */
+      height: 100vh;         /* usa dvh */
       object-fit: cover;
       z-index: 1;
       background:#000;
     }
 
-    /* SVG overlay que tapa TODO */
+    /* SVG overlay que tapa TODO y recorta el hueco del logo */
     svg#overlay{
       position: fixed;
       inset: 0;               /* top/right/bottom/left = 0 */
