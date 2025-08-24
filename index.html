@@ -22,7 +22,7 @@
 
     html, body{
       margin: 0;
-      height: 100vh;        /* deja “camino” para scrollear lo cambié de 500 a 100 de nuevo*/
+      height: 220vh;        /* deja “camino” para scrollear lo cambié de 500 a 220 de nuevo*/
       background: #000;
     }
 
@@ -91,8 +91,8 @@
 
       // 📏 Límites y sensibilidad del crecimiento del hueco
       const MIN = 1.0;      // escala mínima (hueco chico al inicio)
-      const MAX = 10;      // escala máxima cambió de 5 a 6.5
-      const SPEED = 0.006;  // sensibilidad del scroll
+      const MAX = 16;      // escala máxima cambió de 5 a 6.5
+      const SPEED = 0.008;  // sensibilidad del scroll
 
       function onScroll(){
         const y = window.scrollY || document.documentElement.scrollTop || 0;
@@ -104,14 +104,14 @@
       onScroll();
       window.addEventListener('scroll', onScroll, { passive: true });
 
-      // (Opcional) fade-out del overlay cuando llega al máximo
+      /* (Opcional) fade-out del overlay cuando llega al máximo
       const overlay = document.getElementById('overlay');
       overlay.style.transition = 'opacity .3s ease';
       window.addEventListener('scroll', () => {
         const y = window.scrollY || 0;
         const k = Math.max(MIN, Math.min(MAX, MIN + y * SPEED));
         overlay.style.opacity = (k >= MAX - 0.5) ? '0' : '1';     //le quité el >=-0.5
-      }, { passive:true });
+      }, { passive:true });*/
     })();
   </script>
 </body>
