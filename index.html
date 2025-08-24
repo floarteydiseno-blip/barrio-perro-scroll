@@ -110,7 +110,7 @@
       window.addEventListener('scroll', () => {
         const y = window.scrollY || 0;
         const k = Math.max(MIN, Math.min(MAX, MIN + y * SPEED));
-        overlay.style.opacity = (k >= MAX - 0.5) ? '0' : '1';     //Cambio de .05 a .5
+        overlay.style.opacity = (k >= MAX) ? '0' : '1';     //le quité el -0.5
       }, { passive:true });
     })();
   </script>
