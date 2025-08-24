@@ -22,7 +22,7 @@
 
     html, body{
       margin: 0;
-      height: 360vh;        /* deja “camino” para scrollear lo cambié de 220 a 360 de nuevo*/
+      height: var(--docH, 300vh);   /*360vh; /* deja “camino” para scrollear lo cambié de 220 a 360 de nuevo*/
       background: #000;
     }
 
@@ -91,9 +91,17 @@
 
       // 📏 Límites y sensibilidad del crecimiento del hueco
       const MIN = 1.0;      // escala mínima (hueco chico al inicio)
-      const MAX = 30;      // escala máxima cambió de 5 a 6.5
-      const SPEED = 0.006;  // sensibilidad del scroll
+      const MAX = 12;      // escala máxima cambió de 18 a 12
+      const SPEED = 0.008;  // sensibilidad del scroll
+      /*NUEVO*/
+       // px de scroll necesarios para pasar de MIN a MAX
+  const yNeeded = (MAX - MIN) / SPEED; // en píxeles
 
+  // conviértelo a vh del viewport actual
+  const vhNeeded = 100 + (yNeeded / window.innerHeight) * 100;
+  document.documentElement.style.setProperty('--docH', Math.ceil(vhNeeded) + 'vh');
+})();
+    /*FIN DE LO NUEVO*/
       function onScroll(){
         const y = window.scrollY || document.documentElement.scrollTop || 0;
         const k = Math.max(MIN, Math.min(MAX, MIN + y * SPEED));
