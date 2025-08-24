@@ -59,7 +59,7 @@
   </video>
 
   <!-- Overlay con máscara “knockout”: blanco=tapa, negro=hueco -->
-  <svg id="overlay" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+  <svg id="overlay" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
     <defs>
       <!-- 👇 usamos unidades del viewBox (userSpaceOnUse) y llenamos con 100x100 -->
       <mask id="revealMask" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse"
@@ -86,7 +86,7 @@
     </defs>
 
     <!-- 👇 rect negro del tamaño del viewBox (llena siempre el SVG) -->
-    <rect x="0" y="0" width="100" height="100" fill="var(--overlay)" mask="url(#revealMask)"/>
+    <rect x="0" y="0" width="100%" height="100%" fill="var(--overlay)" mask="url(#revealMask)"/>
   </svg>
 
   <script>
