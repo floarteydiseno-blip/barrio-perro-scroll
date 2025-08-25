@@ -65,7 +65,7 @@
       <mask id="revealMask" 
         maskUnits="userSpaceOnUse" 
         maskContentUnits="userSpaceOnUse"
-        x="0" y="0" width="100" height="100"
+        x="0" y="0" width="100%" height="100%"  /*Agregue %*/
         style="mask-type: luminance">
         <!-- Fondo blanco: mantiene visible TODO el overlay negro -->
         <rect x="0" y="0" width="100" height="100" fill="white"/>
@@ -81,14 +81,14 @@
             transform:
               translate(calc(-50% + var(--dx)), calc(-50% + var(--dy)))
               scale(var(--k));
-          transform-box: fill-box;  
+        /*  transform-box: fill-box;  */
           transform-origin: 50% 50%;
           " />
       </mask>
     </defs>
 
     <!-- 👇 rect negro del tamaño del viewBox (llena siempre el SVG) -->
-    <rect x="0" y="0" width="100" height="100" fill="var(--overlay)" mask="url(#revealMask)"/>
+    <rect x="0" y="0" width="100%" height="100%" fill="var(--overlay)" mask="url(#revealMask)"/>
   </svg>
 
   <script>
