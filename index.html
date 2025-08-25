@@ -3,24 +3,27 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Barrio Perro – Reveal on Scroll (logo transparente)</title>
+  <title>Barrio Perro – Reveal on Scroll (centrado)</title>
   <style>
     :root{
-      --overlay: #000000;   /* color de la pantalla */
-      --holeBase: 20vmin;   /* tamaño inicial del logo (ajústalo) */
-      --dx: 0vmin;          /* correcciones finas de centrado */
-      --dy: 0vmin;
-      --k: 1;               /* escala dinámica con el scroll */
+      /* Color del overlay (pantalla) */
+      --overlay: #000000;
+
+      /* Tamaño base del hueco (logo) — AJUSTA AQUÍ */
+      --holeBase: 5vmin;   /* más pequeño que antes para que no se vea enorme */
+
+      /* Offsets finos del hueco — AJUSTA SI LO VES CORRIDO */
+      --dx: 0vmin;          /* + derecha / - izquierda */
+      --dy: .15vmin;          /* + abajo / - arriba LO CAMBIE DE 0 = A .15*/
+
+      /* Escala dinámica (la cambia el scroll) */
+      --k: 1;
     }
 
     html, body{
       margin: 0;
-      /*min-height: 100dvh;*/
+      height: 360vh;        /* deja “camino” para scrollear lo cambié de 220 a 360 de nuevo*/
       background: #000;
-      width: 100%;
-      /* altura de scroll (sube si en Wix falta recorrido) */
-      height: 520vh;
-      overflow-x: hidden;
     }
 
     /* Video fijo al fondo */
@@ -28,20 +31,20 @@
       position: fixed;
       inset: 0;
       width: 100vw;
-      height: 100dvh;
+      height: 100vh;
       object-fit: cover;
       z-index: 1;
       background:#000;
     }
 
-    /* SVG overlay que tapa TODO (negro) y recorta con máscara */
+    /* Overlay SVG que tapa TODO y recorta el hueco del logo */
     svg#overlay{
       position: fixed;
       inset: 0;
       width: 100vw;
-      height: 100dvh;
+      height: 100vh;
       z-index: 2;
-      pointer-events: none;
+      pointer-events: none; /* no bloquea el scroll */
       display: block;
     }
   </style>
@@ -53,21 +56,18 @@
     <source src="HERO.mp4" type="video/mp4" />
   </video>
 
-  <!-- Overlay con máscara: blanco=tapa (negro visible), negro=hueco (video) -->
-  <svg id="overlay" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <!-- Overlay con máscara “knockout”: blanco=tapa, negro=hueco -->
+  <svg id="overlay" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" aria-hidden="true">  /*CAMBIO/*
     <defs>
-      <mask id="revealMask"
-            maskUnits="userSpaceOnUse"
-            maskContentUnits="userSpaceOnUse"
-            x="0" y="0" width="100" height="100"
-            style="mask-type: luminance">
-        <!-- Fondo blanco: mantiene visible TODO el rect negro -->
-        <rect x="0" y="0" width="100" height="100" fill="white"/>
-        <!-- Tu LOGO negro (con letras internas) centrado; escala con --k -->
+      <!-- Usamos unidades del viewport para tener control fino (px/vmin) -->
+      <mask id="revealMask" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse">
+        <!-- Fondo blanco: mantiene visible todo el overlay negro -->
+        <rect x="0" y="0" width="100vw" height="100vh" fill="white"/>
+        <!-- Logo NEGRO (fondo TRANSPARENTE) centrado y escalable -->
+        <!-- Si tu logo sigue viéndose corrido: ajusta --dx y --dy -->
         <image
-          href="logo-mask.svg?v=3"
-          xlink:href="logo-mask.svg?v=3"
-          x="50" y="50"              
+          href="logo-mask.svg"
+          x="50%" y="50%"
           preserveAspectRatio="xMidYMid meet"
           style="
             width:  var(--holeBase);
@@ -75,34 +75,43 @@
             transform:
               translate(calc(-50% + var(--dx)), calc(-50% + var(--dy)))
               scale(var(--k));
+            transform-box: fill-box;
             transform-origin: 50% 50%;
           " />
       </mask>
     </defs>
 
-    <!-- Rect negro que tapa todo y aplica la máscara (abre el “hueco” del logo) -->
-    <rect x="0" y="0" width="100" height="100"
-          style="fill: var(--overlay)"
-          mask="url(#revealMask)"/>
+    <!-- Rectángulo negro que tapa todo; la máscara abre el hueco del logo -->
+    <rect x="0" y="0" width="100%" height="100%" fill="var(--overlay)" mask="url(#revealMask)"/>
   </svg>
 
   <script>
     (function(){
       const root = document.documentElement;
 
-      // Diales del crecimiento del logo (sin fade)
-      const MIN   = 1.0;    // escala mínima
-      const MAX   = 12.0;   // súbelo si quieres que se salga más de pantalla
-      const SPEED = 0.008;  // súbelo si en Wix hay poco scroll
+      // 📏 Límites y sensibilidad del crecimiento del hueco
+      const MIN = 1.0;      // escala mínima (hueco chico al inicio)
+      const MAX = 30;      // escala máxima cambió de 5 a 6.5
+      const SPEED = 0.006;  // sensibilidad del scroll
 
       function onScroll(){
         const y = window.scrollY || document.documentElement.scrollTop || 0;
         const k = Math.max(MIN, Math.min(MAX, MIN + y * SPEED));
         root.style.setProperty('--k', String(k));
       }
+
+      // Inicializa y escucha scroll
       onScroll();
       window.addEventListener('scroll', onScroll, { passive: true });
-         
+
+      /* (Opcional) fade-out del overlay cuando llega al máximo
+      const overlay = document.getElementById('overlay');
+      overlay.style.transition = 'opacity .3s ease';
+      window.addEventListener('scroll', () => {
+        const y = window.scrollY || 0;
+        const k = Math.max(MIN, Math.min(MAX, MIN + y * SPEED));
+        overlay.style.opacity = (k >= MAX - 0.5) ? '0' : '1';     //le quité el >=-0.5
+      }, { passive:true });*/
     })();
   </script>
 </body>
