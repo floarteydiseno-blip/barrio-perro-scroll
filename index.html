@@ -114,7 +114,7 @@
 
       /* (Opcional) fade-out del overlay cuando llega al máximo */
       const overlay = document.getElementById('overlay');
-      overlay.style.transition = 'opacity 1.2s ease';
+      overlay.style.transition = 'opacity .8s ease';
       window.addEventListener('scroll', () => {
         const y = window.scrollY || 0;
         const k = Math.max(MIN, Math.min(MAX, MIN + y * SPEED));
