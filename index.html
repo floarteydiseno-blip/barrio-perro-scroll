@@ -9,7 +9,7 @@
       --overlay: #000000;
 
       /* tamaño base del hueco (ajústalo) */
-      --holeBase: 5vmin;
+      --holeBase: 26vmin;
 
       /* offsets finos del hueco */
       --dx: 0vmin;
@@ -78,7 +78,8 @@
             transform:
               translate(calc(-50% + var(--dx)), calc(-50% + var(--dy)))
               scale(var(--k));
-            transform-origin: 50% 50%;
+          transform-box: fill-box;  
+          transform-origin: 50% 50%;
           " />
       </mask>
     </defs>
