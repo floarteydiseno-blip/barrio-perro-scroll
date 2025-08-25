@@ -93,8 +93,8 @@
 (function(){
   // 🔧 Ajusta solo estos 3 diales
   const MIN   = 1.0;     // escala inicial del hueco
-  const MAX   = 100;    // cuánto debe crecer hasta salirse de pantalla
-  const SPEED = 0.020;   // sensibilidad del scroll (más alto = abre más rápido)
+  const MAX   = 12;    // cuánto debe crecer hasta salirse de pantalla
+  const SPEED = 0.000;   // sensibilidad del scroll (más alto = abre más rápido)
 
   // Calcula la altura de documento que necesitas para llegar de MIN a MAX
   function setDocHeight(){
@@ -117,7 +117,7 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', () => { setDocHeight(); onScroll(); });
 
-   /* (Opcional) fade-out del overlay cuando llega al máximo */
+   /* (Opcional) fade-out del overlay cuando llega al máximo 
       const overlay = document.getElementById('overlay');
       overlay.style.transition = 'opacity .3s ease';
       window.addEventListener('scroll', () => {
