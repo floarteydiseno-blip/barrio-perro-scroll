@@ -1,61 +1,47 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Barrio Perro – Reveal on Scroll (AR correcto)</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Barrio Perro – Reveal on Scroll (logo transparente)</title>
   <style>
     :root{
-      /* Color de la pantalla */
-      --overlay: #000;
-
-      /* Tamaño del hueco (ANCHO) en vmin: AJUSTA AQUÍ */
-      --holeW: 26vmin;
-
-      /* Offsets finos del hueco (para centrar) */
-      --ox: 0px;  /* + a la derecha, - a la izquierda */
-      --oy: 0px;  /* + hacia abajo, - hacia arriba */
+      --overlay: #000000;   /* color de la pantalla */
+      --holeBase: 28vmin;   /* tamaño inicial del logo (ajústalo) */
+      --dx: 0vmin;          /* correcciones finas de centrado */
+      --dy: 0vmin;
+      --k: 1;               /* escala dinámica con el scroll */
     }
 
     html, body{
-      margin:0;
-      height:220vh;        /* espacio para scrollear */
-      background:#000;
+      margin: 0;
+      min-height: 100dvh;
+      background: #000;
+      /* altura de scroll (sube si en Wix falta recorrido) */
+      height: 320vh;
+      overflow-x: hidden;
     }
 
     /* Video fijo al fondo */
     #video-bg{
-      position:fixed; inset:0;
-      width:100vw; height:100vh;
-      object-fit:cover;
-      z-index:1;
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100dvh;
+      object-fit: cover;
+      z-index: 1;
       background:#000;
     }
 
-    /* Capa que tapa todo y usa la máscara del logo */
-    #overlay{
-      position:fixed; inset:0;
-      z-index:2;
-      background:var(--overlay);
-      pointer-events:none;
-
-      /* ✅ Máscara desde archivo KO (fondo blanco, logo negro) */
-      -webkit-mask-image: url('logo-mask.svg');
-      mask-image: url('logo-mask.svg');
-
-      -webkit-mask-repeat: no-repeat;
-      mask-repeat: no-repeat;
-
-      /* Centrado con pequeños ajustes */
-      -webkit-mask-position: calc(50% + var(--ox)) calc(50% + var(--oy));
-      mask-position: calc(50% + var(--ox)) calc(50% + var(--oy));
-
-      /* 🚫 Sin deformación: ancho controlado, alto AUTO mantiene proporción */
-      -webkit-mask-size: var(--holeW) auto;
-      mask-size: var(--holeW) auto;
-
-      /* Suavidad al cambiar tamaño */
-      transition: -webkit-mask-size .18s ease-out, mask-size .18s ease-out, opacity .3s ease;
+    /* SVG overlay que tapa TODO (negro) y recorta con máscara */
+    svg#overlay{
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100dvh;
+      z-index: 2;
+      pointer-events: none;
+      display: block;
     }
   </style>
 </head>
@@ -63,41 +49,69 @@
 
   <!-- Video de fondo -->
   <video id="video-bg" autoplay muted loop playsinline preload="auto" poster="poster.jpg">
-    <source src="HERO.mp4" type="video/mp4"/>
+    <source src="HERO.mp4" type="video/mp4" />
   </video>
 
-  <!-- Overlay negro con máscara del logo -->
-  <div id="overlay" aria-hidden="true"></div>
+  <!-- Overlay con máscara: blanco=tapa (negro visible), negro=hueco (video) -->
+  <svg id="overlay" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+    <defs>
+      <mask id="revealMask"
+            maskUnits="userSpaceOnUse"
+            maskContentUnits="userSpaceOnUse"
+            x="0" y="0" width="100" height="100"
+            style="mask-type: luminance">
+        <!-- Fondo blanco: mantiene visible TODO el rect negro -->
+        <rect x="0" y="0" width="100" height="100" fill="white"/>
+        <!-- Tu LOGO negro (con letras internas) centrado; escala con --k -->
+        <image
+          href="logo-mask.svg?v=3"      <!-- usa tu archivo original -->
+          xlink:href="logo-mask.svg?v=3"
+          x="50" y="50"                  <!-- coords en el viewBox -->
+          preserveAspectRatio="xMidYMid meet"
+          style="
+            width:  var(--holeBase);
+            height: var(--holeBase);
+            transform:
+              translate(calc(-50% + var(--dx)), calc(-50% + var(--dy)))
+              scale(var(--k));
+            transform-origin: 50% 50%;
+          " />
+      </mask>
+    </defs>
+
+    <!-- Rect negro que tapa todo y aplica la máscara (abre el “hueco” del logo) -->
+    <rect x="0" y="0" width="100" height="100"
+          style="fill: var(--overlay)"
+          mask="url(#revealMask)"/>
+  </svg>
 
   <script>
     (function(){
       const root = document.documentElement;
 
-      // Parámetros del crecimiento del hueco
-      const MIN_W = 24;   // vmin inicial aprox.
-      const MAX_W = 160;  // vmin al final (abre casi todo)
-      const SPEED = 0.10; // sensibilidad del scroll
+      // Diales del crecimiento del logo (sin fade)
+      const MIN   = 1.0;    // escala mínima
+      const MAX   = 12.0;   // súbelo si quieres que se salga más de pantalla
+      const SPEED = 0.008;  // súbelo si en Wix hay poco scroll
 
       function onScroll(){
         const y = window.scrollY || document.documentElement.scrollTop || 0;
-        const next = Math.max(MIN_W, Math.min(MAX_W, MIN_W + y * SPEED));
-        root.style.setProperty('--holeW', next + 'vmin');
+        const k = Math.max(MIN, Math.min(MAX, MIN + y * SPEED));
+        root.style.setProperty('--k', String(k));
       }
 
-      // Centrado fino (tócalos si lo ves corrido)
-      // root.style.setProperty('--ox', '0px');
-      // root.style.setProperty('--oy', '0px');
+      // Si quieres que la página tenga exactamente el alto necesario:
+      // (opcional; quita el height fijo del body si activas esto)
+      // function setDocH(){
+      //   const yNeeded = (MAX - MIN) / SPEED;
+      //   const vh = 100 + (yNeeded / innerHeight) * 100;
+      //   root.style.setProperty('--docH', Math.ceil(vh) + 'vh');
+      // }
+      // setDocH();
 
       onScroll();
-      window.addEventListener('scroll', onScroll, { passive:true });
-
-      // (Opcional) desvanecer overlay al final
-      const overlay = document.getElementById('overlay');
-      window.addEventListener('scroll', () => {
-        const y = window.scrollY || 0;
-        const val = MIN_W + y * SPEED;
-        overlay.style.opacity = (val >= MAX_W - 1) ? '0' : '1';
-      }, { passive:true });
+      window.addEventListener('scroll', onScroll, { passive: true });
+      // window.addEventListener('resize', () => { setDocH(); onScroll(); });
     })();
   </script>
 </body>
