@@ -23,7 +23,7 @@
     html, body{
       margin: 0;
       /* en lugar de height fija, usa min-height controlada por JS */
-       min-height: var(--docH, 620vh);
+       min-height: var(--docH, 320vh);
        height: auto;
        overflow-y: auto;
      /* height: 540vh;    /*var(--docH, 300vh); /* deja “camino” para scrollear lo cambié de 220 a 360 de nuevo*/
@@ -61,7 +61,7 @@
   </video>
 
   <!-- Overlay con máscara “knockout”: blanco=tapa, negro=hueco -->
-  <svg id="overlay" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" aria-hidden="true">  /*CAMBIO/*
+  <svg id="overlay" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">  /*CAMBIO/*
     <defs>
       <!-- Usamos unidades del viewport para tener control fino (px/vmin) -->
       <mask id="revealMask" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse">
@@ -94,7 +94,7 @@
   // 🔧 Ajusta solo estos 3 diales
   const MIN   = 1.0;     // escala inicial del hueco
   const MAX   = 12;    // cuánto debe crecer hasta salirse de pantalla
-  const SPEED = 0.000;   // sensibilidad del scroll (más alto = abre más rápido)
+  const SPEED = 0.5;   // sensibilidad del scroll (más alto = abre más rápido)
 
   // Calcula la altura de documento que necesitas para llegar de MIN a MAX
   function setDocHeight(){
