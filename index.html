@@ -91,7 +91,7 @@
 
       // 📏 Límites y sensibilidad del crecimiento del hueco
       const MIN = 1.0;      // escala mínima (hueco chico al inicio)
-      const MAX = 18;      // escala máxima cambió de 12 A 20
+      const MAX = 16;      // escala máxima cambió de 12 A 20
       const SPEED = 0.008;  // sensibilidad del scroll
       /*NUEVO
        // px de scroll necesarios para pasar de MIN a MAX
@@ -114,7 +114,7 @@
 
       /* (Opcional) fade-out del overlay cuando llega al máximo */
       const overlay = document.getElementById('overlay');
-      overlay.style.transition = 'opacity .6s ease';
+      overlay.style.transition = 'opacity .5s ease';
       window.addEventListener('scroll', () => {
         const y = window.scrollY || 0;
         const k = Math.max(MIN, Math.min(MAX, MIN + y * SPEED));
