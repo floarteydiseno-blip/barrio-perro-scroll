@@ -111,7 +111,7 @@
 
       onScroll();
       window.addEventListener('scroll', onScroll, { passive: true });
-      // window.addEventListener('resize', () => { setDocH(); onScroll(); });
+      window.addEventListener('resize', () => { setDocH(); onScroll(); });
     })();
   </script>
 </body>
