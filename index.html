@@ -54,7 +54,7 @@
   </video>
 
   <!-- Overlay con máscara: blanco=tapa (negro visible), negro=hueco (video) -->
-  <svg id="overlay" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+  <svg id="overlay" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
     <defs>
       <mask id="revealMask"
             maskUnits="userSpaceOnUse"
@@ -100,27 +100,9 @@
         const k = Math.max(MIN, Math.min(MAX, MIN + y * SPEED));
         root.style.setProperty('--k', String(k));
       }
-
-      // Si quieres que la página tenga exactamente el alto necesario:
-      // (opcional; quita el height fijo del body si activas esto)
-       //function setDocH(){
-       // const yNeeded = (MAX - MIN) / SPEED;
-       //  const vh = 100 + (yNeeded / innerHeight) * 100;
-        // root.style.setProperty('--docH', Math.ceil(vh) + 'vh');
-       //}
-       //setDocH();
-
       onScroll();
       window.addEventListener('scroll', onScroll, { passive: true });
-            // (Opcional) fade-out del overlay al final
-      const overlay = document.getElementById('overlay');
-      overlay.style.transition = 'opacity .3s ease';
-      window.addEventListener('scroll', () => {
-        const y = window.scrollY || 0;
-        const k = Math.max(MIN, Math.min(MAX, MIN + y * SPEED));
-        overlay.style.opacity = (k >= MAX - 0.05) ? '0' : '1';
-      }, { passive:true });
-
+         
     })();
   </script>
 </body>
