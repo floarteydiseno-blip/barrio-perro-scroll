@@ -18,7 +18,7 @@
       min-height: 100dvh;
       background: #000;
       /* altura de scroll (sube si en Wix falta recorrido) */
-     
+      height: 320vh;
       overflow-x: hidden;
     }
 
@@ -37,8 +37,8 @@
     svg#overlay{
       position: fixed;
       inset: 0;
-      width: 100%;
-      height: 100%;
+      width: 100vw;
+      height: 100dvh;
       z-index: 2;
       pointer-events: none;
       display: block;
@@ -58,15 +58,15 @@
       <mask id="revealMask"
             maskUnits="userSpaceOnUse"
             maskContentUnits="userSpaceOnUse"
-            x="0" y="0" width="100%" height="100%"
+            x="0" y="0" width="100" height="100"
             style="mask-type: luminance">
         <!-- Fondo blanco: mantiene visible TODO el rect negro -->
-        <rect x="0" y="0" width="100%" height="100%" fill="white"/>
+        <rect x="0" y="0" width="100" height="100" fill="white"/>
         <!-- Tu LOGO negro (con letras internas) centrado; escala con --k -->
         <image
           href="logo-mask.svg?v=3"
           xlink:href="logo-mask.svg?v=3"
-          x="50" y="50"              
+          x="50%" y="50%"              
           preserveAspectRatio="xMidYMid meet"
           style="
             width:  var(--holeBase);
@@ -102,16 +102,24 @@
 
       // Si quieres que la página tenga exactamente el alto necesario:
       // (opcional; quita el height fijo del body si activas esto)
-       function setDocH(){
-        const yNeeded = (MAX - MIN) / SPEED;
-         const vh = 100 + (yNeeded / innerHeight) * 100;
-         root.style.setProperty('--docH', Math.ceil(vh) + 'vh');
-       }
-       setDocH();
+       //function setDocH(){
+       // const yNeeded = (MAX - MIN) / SPEED;
+       //  const vh = 100 + (yNeeded / innerHeight) * 100;
+        // root.style.setProperty('--docH', Math.ceil(vh) + 'vh');
+       //}
+       //setDocH();
 
       onScroll();
       window.addEventListener('scroll', onScroll, { passive: true });
-      window.addEventListener('resize', () => { setDocH(); onScroll(); });
+            // (Opcional) fade-out del overlay al final
+      const overlay = document.getElementById('overlay');
+      overlay.style.transition = 'opacity .3s ease';
+      window.addEventListener('scroll', () => {
+        const y = window.scrollY || 0;
+        const k = Math.max(MIN, Math.min(MAX, MIN + y * SPEED));
+        overlay.style.opacity = (k >= MAX - 0.05) ? '0' : '1';
+      }, { passive:true });
+
     })();
   </script>
 </body>
