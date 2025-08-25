@@ -9,7 +9,7 @@
       --overlay: #000000;
 
       /* tamaño base del hueco (ajústalo) */
-      --holeBase: 5vmin;
+      --holeBase: 26vmin;
 
       /* offsets finos del hueco */
       --dx: 0vmin;
@@ -21,7 +21,7 @@
     /* 👇 clave: cubrir pantalla real y evitar desplazamientos laterales */
     html, body{
       margin: 0;
-     /* min-height: 100dvh;     /* mejor que 100vh en móvil 
+      min-height: 100dvh;     /* mejor que 100vh en móvil */
       width: 100%;
       overflow-x: hidden;*/
       background: #000;
@@ -73,8 +73,8 @@
         <image
           href="logo-mask.svg"
           xlink:href="logo-mask.svg" 
-          x="50" y="50"                           <!-- coord. en viewBox -->
-          preserveAspectRatio="xMidYMid meet"    <!-- mantiene proporción -->
+          x="50" y="50"                          
+          preserveAspectRatio="xMidYMid meet"    
           style="
             width:  var(--holeBase);
             height: var(--holeBase);
