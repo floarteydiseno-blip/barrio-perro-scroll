@@ -22,13 +22,14 @@
 
     html, body{
       margin: 0;
-      /* en lugar de height fija, usa min-height controlada por JS 
-       min-height: 100dvh; */
-      /* height: auto;
+      /* en lugar de height fija, usa min-height controlada por JS */
+       min-height: 100dvh; 
+       width: 100%;
+      /* height: auto; */
        overflow-x: hidden;
-       overflow-y: auto;*/
+      /* overflow-y: auto;*/
        height: 540vh;    /*var(--docH, 300vh); /* deja “camino” para scrollear lo cambié de 220 a 360 de nuevo*/
-      background: #000;
+       background: #000;
     }
 
     /* Video fijo al fondo */
@@ -65,16 +66,16 @@
   <svg id="overlay" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" aria-hidden="true">  /*CAMBIO/*
     <defs>
       <!-- Usamos unidades del viewport para tener control fino (px/vmin) -->
-      <mask id="revealMask" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" style="mask-type: luminance"
+      <mask id="revealMask" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" 
              x="0" y="0" width="100" height="100">
         <!-- Fondo blanco: mantiene visible todo el overlay negro -->
-        <rect x="0" y="0" width="100vw" height="100vh" fill="white"/>
+        <rect x="0" y="0" width="100" height="100" fill="white"/>  /* width="100vw" height="100vh" fill="white"/>*/
         <!-- Logo NEGRO (fondo TRANSPARENTE) centrado y escalable -->
         <!-- Si tu logo sigue viéndose corrido: ajusta --dx y --dy -->
         <image
           href="logo-mask.svg"
           xlink:href="logo-mask.svg"
-          x="50%" y="50%"
+          x="50" y="50"                         /* x="50%" y="50%"*/
           preserveAspectRatio="xMidYMid meet"
           style="
             width:  var(--holeBase);
@@ -82,14 +83,14 @@
             transform:
               translate(calc(-50% + var(--dx)), calc(-50% + var(--dy)))
               scale(var(--k));
-            transform-box: fill-box;
+            /*transform-box: fill-box;*/
             transform-origin: 50% 50%;
           " />
       </mask>
     </defs>
 
     <!-- Rectángulo negro que tapa todo; la máscara abre el hueco del logo -->
-    <rect x="0" y="0" width="100%" height="100%" fill="var(--overlay)" mask="url(#revealMask)"/>
+    <rect x="0" y="0" width="100" height="100" fill="var(--overlay)" mask="url(#revealMask)"/>  /* QUITE % */
   </svg>
 
   <script>
