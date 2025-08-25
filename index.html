@@ -1,53 +1,61 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Barrio Perro – Reveal on Scroll (centrado)</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Barrio Perro – Reveal on Scroll (AR correcto)</title>
   <style>
     :root{
-      --overlay: #000000;
+      /* Color de la pantalla */
+      --overlay: #000;
 
-      /* tamaño base del hueco (ajústalo) */
-      --holeBase: 28vmin;
+      /* Tamaño del hueco (ANCHO) en vmin: AJUSTA AQUÍ */
+      --holeW: 26vmin;
 
-      /* offsets finos del hueco */
-      --dx: 0vmin;
-      --dy: .15vmin;
-
-      --k: 1;
+      /* Offsets finos del hueco (para centrar) */
+      --ox: 0px;  /* + a la derecha, - a la izquierda */
+      --oy: 0px;  /* + hacia abajo, - hacia arriba */
     }
 
-    /* 👇 clave: cubrir pantalla real y evitar desplazamientos laterales */
     html, body{
-      margin: 0;
-      min-height: 100dvh;     /* mejor que 100vh en móvil */
-      width: 100%;
-      overflow-x: hidden;*/
-      background: #000;
-      height: 220vh;          /* para que haya scroll */
+      margin:0;
+      height:220vh;        /* espacio para scrollear */
+      background:#000;
     }
 
     /* Video fijo al fondo */
     #video-bg{
-      position: fixed;
-      inset: 0;
-      width: 100vw;           /* usa vw */
-      height: 100dvh;         /* usa dvh */
-      object-fit: cover;
-      z-index: 1;
+      position:fixed; inset:0;
+      width:100vw; height:100vh;
+      object-fit:cover;
+      z-index:1;
       background:#000;
     }
 
-    /* SVG overlay que tapa TODO */
-    svg#overlay{
-      position: fixed;
-      inset: 0;               /* top/right/bottom/left = 0 */
-      width: 100vw;           /* 👈 en vez de 100% */
-      height: 100dvh;         /* 👈 en vez de 100% */
-      z-index: 2;
-      pointer-events: none;
-      display: block;
+    /* Capa que tapa todo y usa la máscara del logo */
+    #overlay{
+      position:fixed; inset:0;
+      z-index:2;
+      background:var(--overlay);
+      pointer-events:none;
+
+      /* ✅ Máscara desde archivo KO (fondo blanco, logo negro) */
+      -webkit-mask-image: url('logo-knockout.svg');
+      mask-image: url('logo-knockout.svg');
+
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+
+      /* Centrado con pequeños ajustes */
+      -webkit-mask-position: calc(50% + var(--ox)) calc(50% + var(--oy));
+      mask-position: calc(50% + var(--ox)) calc(50% + var(--oy));
+
+      /* 🚫 Sin deformación: ancho controlado, alto AUTO mantiene proporción */
+      -webkit-mask-size: var(--holeW) auto;
+      mask-size: var(--holeW) auto;
+
+      /* Suavidad al cambiar tamaño */
+      transition: -webkit-mask-size .18s ease-out, mask-size .18s ease-out, opacity .3s ease;
     }
   </style>
 </head>
@@ -55,71 +63,40 @@
 
   <!-- Video de fondo -->
   <video id="video-bg" autoplay muted loop playsinline preload="auto" poster="poster.jpg">
-    <source src="HERO.mp4" type="video/mp4" />
+    <source src="HERO.mp4" type="video/mp4"/>
   </video>
 
-  <!-- Overlay con máscara “knockout”: blanco=tapa, negro=hueco -->
-  <svg id="overlay" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-    <defs>
-      <!-- 👇 usamos unidades del viewBox (userSpaceOnUse) y llenamos con 100x100 -->
-      <mask id="revealMask" 
-        maskUnits="userSpaceOnUse" 
-        maskContentUnits="userSpaceOnUse"
-        x="0" y="0" width="100" height="100" 
-        style="mask-type: luminance">
-        <!-- Fondo blanco: mantiene visible TODO el overlay negro -->
-        <rect x="0" y="0" width="100" height="100" fill="white"/>
-        <!-- Logo negro (hueco), centrado y escalable -->
-        <image
-          href="logo-mask.svg?v=2"
-          xlink:href="logo-mask.svg?v=2" 
-          x="50" y="50"                          
-          preserveAspectRatio="xMidYMid meet"    
-          style="
-            width:  var(--holeBase);
-            height: var(--holeBase);
-            transform:
-              translate(calc(-50% + var(--dx)), calc(-50% + var(--dy)))
-              scale(var(--k));
-          transform-origin: 50% 50%;
-          " />
-      </mask>
-    </defs>
-
-    <!-- 👇 rect negro del tamaño del viewBox (llena siempre el SVG) -->
-    <rect x="0" y="0" 
-     width="100" height="100"
-     style="fill: var(--overlay)"
-     mask="url(#revealMask)"/>
-  </svg>
- 
-  fetch('logo-mask.svg?v=2').then(r => console.log('mask svg status:', r.status));
+  <!-- Overlay negro con máscara del logo -->
+  <div id="overlay" aria-hidden="true"></div>
 
   <script>
     (function(){
       const root = document.documentElement;
 
-      // límites y sensibilidad del crecimiento del hueco
-      const MIN = 1.0;
-      const MAX = 5.0;
-      const SPEED = 0.003;
+      // Parámetros del crecimiento del hueco
+      const MIN_W = 24;   // vmin inicial aprox.
+      const MAX_W = 160;  // vmin al final (abre casi todo)
+      const SPEED = 0.10; // sensibilidad del scroll
 
       function onScroll(){
         const y = window.scrollY || document.documentElement.scrollTop || 0;
-        const k = Math.max(MIN, Math.min(MAX, MIN + y * SPEED));
-        root.style.setProperty('--k', String(k));
+        const next = Math.max(MIN_W, Math.min(MAX_W, MIN_W + y * SPEED));
+        root.style.setProperty('--holeW', next + 'vmin');
       }
 
-      onScroll();
-      window.addEventListener('scroll', onScroll, { passive: true });
+      // Centrado fino (tócalos si lo ves corrido)
+      // root.style.setProperty('--ox', '0px');
+      // root.style.setProperty('--oy', '0px');
 
-      // (Opcional) fade-out del overlay al final
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive:true });
+
+      // (Opcional) desvanecer overlay al final
       const overlay = document.getElementById('overlay');
-      overlay.style.transition = 'opacity .3s ease';
       window.addEventListener('scroll', () => {
         const y = window.scrollY || 0;
-        const k = Math.max(MIN, Math.min(MAX, MIN + y * SPEED));
-        overlay.style.opacity = (k >= MAX - 0.05) ? '0' : '1';
+        const val = MIN_W + y * SPEED;
+        overlay.style.opacity = (val >= MAX_W - 1) ? '0' : '1';
       }, { passive:true });
     })();
   </script>
