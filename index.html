@@ -9,7 +9,7 @@
       --overlay: #000000;
 
       /* tamaño base del hueco (ajústalo) */
-      --holeBase: 26vmin;
+      --holeBase: 28vmin;
 
       /* offsets finos del hueco */
       --dx: 0vmin;
@@ -71,8 +71,8 @@
         <rect x="0" y="0" width="100" height="100" fill="white"/>
         <!-- Logo negro (hueco), centrado y escalable -->
         <image
-          href="logo-mask.svg"
-          xlink:href="logo-mask.svg" 
+          href="logo-mask.svg?v=2"
+          xlink:href="logo-mask.svg?v=2" 
           x="50" y="50"                          
           preserveAspectRatio="xMidYMid meet"    
           style="
@@ -81,7 +81,6 @@
             transform:
               translate(calc(-50% + var(--dx)), calc(-50% + var(--dy)))
               scale(var(--k));
-        /*  transform-box: fill-box;  */
           transform-origin: 50% 50%;
           " />
       </mask>
@@ -90,9 +89,11 @@
     <!-- 👇 rect negro del tamaño del viewBox (llena siempre el SVG) -->
     <rect x="0" y="0" 
      width="100" height="100"
-     style="fill: var(--overlay)" 
+     style="fill: var(--overlay)"
      mask="url(#revealMask)"/>
   </svg>
+ 
+  fetch('logo-mask.svg?v=2').then(r => console.log('mask svg status:', r.status));
 
   <script>
     (function(){
