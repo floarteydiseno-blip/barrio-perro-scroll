@@ -50,16 +50,15 @@
     }
 
     /* ====== TEXTO EN HERO ====== */
-    #headline{
-      position: fixed;
-      inset: 0;
-      z-index: 3;                 /* por encima del overlay */
-      display: grid;
-      align-items: end;           /* pegado abajo */
-      justify-items: center;
-      padding-bottom: clamp(24px, 8vmin, 120px);
-      pointer-events: none;
-    }
+   #headline{
+  position: fixed;
+  inset: 0;
+  z-index: 3;             /* por encima del overlay */
+  display: grid;
+  place-items: center;    /* 👈 centrado vertical y horizontal */
+  pointer-events: none;
+  /* quitamos align-items:end y padding-bottom */
+}
 
     #headline .line{
       font-family: 'Bebas Neue', sans-serif;
@@ -156,13 +155,13 @@
   <rect x="0" y="0" width="100%" height="100%" fill="var(--overlay)" mask="url(#revealMask)"/>
 </svg>
 
-  <!-- Texto que aparece cuando el logo ya abrió -->
+  <!-- Texto que aparece cuando el logo ya abrió 
   <div id="headline" aria-hidden="true">
     <h1 class="line">
       Barrio Perro es más que una tienda: <br/>
       es un refugio natural para perros urbanos.
     </h1>
-  </div>
+  </div> 
 
   <!-- Siguiente “pantalla” con efecto reveal desde abajo -->
   <section class="section">
