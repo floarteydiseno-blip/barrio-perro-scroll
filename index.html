@@ -108,9 +108,9 @@ body.open #headline. line{
   transform: translateY(0);
 }
 
-/* Respeto a usuarios que prefieren menos movimiento */
-@media (prefers-reduced-motion: reduce){
-  #headline, .reveal{
+/* Respeto a usuarios que prefieren menos movimiento*/
+ @media (prefers-reduced-motion: reduce){
+  .reveal{
     transition: none;
     transform: none !important;
     opacity: 1 !important;
@@ -172,7 +172,7 @@ body.open #headline. line{
   
   <script>
     (function(){
-      const root = document.documentElement;
+      //const root = document.documentElement;
 
       // 📏 Límites y sensibilidad del crecimiento del hueco
       const MIN = 1.0;      // escala mínima (hueco chico al inicio)
@@ -181,16 +181,25 @@ body.open #headline. line{
       const OPEN_EPS = 0.05; 
       const overlay = document.getElementById('overlay');
 
+      // Asegura transición del overlay (fade)
+       overlay.style.transition = 'opacity .5s ease';
+
       function clamp(v, a, b){ return Math.max(a, Math.min(b, v)); }
     
       function onScroll(){
         const y = window.scrollY || document.documentElement.scrollTop || 0;
-        const k = Math.max(MIN, Math.min(MAX, MIN + y * SPEED));
+        const k = clamp(MIN + y * SPEED, MIN, MAX);        // Math.max(MIN, Math.min(MAX, MIN + y * SPEED));
         //root.style.setProperty('--k', String(k));
-         document.documentElement.style.setProperty('--k', String(k));
+        document.documentElement.style.setProperty('--k', String(k));
         const opened = (k >= MAX - OPEN_EPS);
         overlay.style.opacity = opened ? '0' : '1';
-        document.body.classList.toggle('open', opened);
+          if (opened) {
+          setTimeout(() => document.body.classList.add('open'), 80);
+          } else {
+            document.body.classList.remove('open');
+          }
+        
+       // document.body.classList.toggle('open', opened);
    
       /*if (k >= MAX - OPEN_EPS) {
       document.body.classList.add('open');
@@ -213,7 +222,7 @@ body.open #headline. line{
         const k = Math.max(MIN, Math.min(MAX, MIN + y * SPEED));
         overlay.style.opacity = (k >= MAX - 0.5) ? '0' : '1';     //le quité el >=-0.5
       }, { passive:true });
-    })();*/
+    })();
 
     // === IntersectionObserver para el reveal ===
   const io = new IntersectionObserver((entries) => {
@@ -222,7 +231,7 @@ body.open #headline. line{
     });
   }, { threshold: 0.15, rootMargin: '0px 0px -10%' });
 
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));*/
     
 // Asegúrate de llamar a onScroll al cargar para fijar el estado inicial
 window.addEventListener('scroll', onScroll, { passive: true });
