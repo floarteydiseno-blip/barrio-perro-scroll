@@ -174,18 +174,11 @@ body.open #headline{
       const MIN = 1.0;      // escala mínima (hueco chico al inicio)
       const MAX = 18;      // escala máxima cambió de 12 A 20
       const SPEED = 0.008;  // sensibilidad del scroll
-
+      const overlay = document.getElementById('overlay');
       const OPEN_EPS = 0.05; 
-      
-      /*NUEVO
-       // px de scroll necesarios para pasar de MIN a MAX
-  const yNeeded = (MAX - MIN) / SPEED; // en píxeles
 
-  // conviértelo a vh del viewport actual
-  const vhNeeded = 100 + (yNeeded / window.innerHeight) * 100;
-  document.documentElement.style.setProperty('--docH', Math.ceil(vhNeeded) + 'vh');
-})();
-    FIN DE LO NUEVO*/
+      function clamp(v, a, b){ return Math.max(a, Math.min(b, v)); }
+    
       function onScroll(){
         const y = window.scrollY || document.documentElement.scrollTop || 0;
         const k = Math.max(MIN, Math.min(MAX, MIN + y * SPEED));
@@ -194,30 +187,28 @@ body.open #headline{
 
     if (k >= MAX - OPEN_EPS) {
       document.body.classList.add('open');
+      overlay.style.opacity = '0';
     } else {
       document.body.classList.remove('open');
+      overlay.style.opacity = '1';
     }
       }
 
-      // Inicializa y escucha scroll
+      /* Inicializa y escucha scroll
       onScroll();
       window.addEventListener('scroll', onScroll, { passive: true });
 
-      /* (Opcional) fade-out del overlay cuando llega al máximo */
-      const overlay = document.getElementById('overlay');
+      /* (Opcional) fade-out del overlay cuando llega al máximo 
+      //const overlay = document.getElementById('overlay');
       overlay.style.transition = 'opacity .5s ease';
       window.addEventListener('scroll', () => {
         const y = window.scrollY || 0;
         const k = Math.max(MIN, Math.min(MAX, MIN + y * SPEED));
         overlay.style.opacity = (k >= MAX - 0.5) ? '0' : '1';     //le quité el >=-0.5
       }, { passive:true });
-    })();
+    })();*/
 
-// Asegúrate de llamar a onScroll al cargar para fijar el estado inicial
-window.addEventListener('scroll', onScroll, { passive: true });
-window.addEventListener('load', onScroll);
-    
-// === IntersectionObserver para el reveal ===
+    // === IntersectionObserver para el reveal ===
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) e.target.classList.add('in');
@@ -225,7 +216,11 @@ window.addEventListener('load', onScroll);
   }, { threshold: 0.15, rootMargin: '0px 0px -10%' });
 
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-
+    
+// Asegúrate de llamar a onScroll al cargar para fijar el estado inicial
+window.addEventListener('scroll', onScroll, { passive: true });
+window.addEventListener('load', onScroll);
+    
 })(); 
     
   </script>
