@@ -8,23 +8,24 @@
   <!-- Fuentes -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lato:wght@400&display=swap" rel="stylesheet">
 
   <style>
     :root{
       --overlay: #000000;
-      --holeBase: 5vmin;      /* tamaño base del logo/hueco */
+      --holeBase: 5vmin;      /* tamaño base del logo/hueco (desktop) */
       --dx: 0vmin;            /* ajuste fino X */
-      --dy: .15vmin;          /* ajuste fino Y (lo tenías así) */
+      --dy: .15vmin;          /* ajuste fino Y */
       --k: 1;                 /* escala dinámica (JS) */
     }
 
     html, body{
       margin: 0;
-      height: 540vh;          /* recorrido para scrollear */
       background: #000;
       overflow-x: hidden;
+      /* En móvil, vh varía con la barra del navegador; usa min-height */
+      min-height: 540vh;
+      height: auto;
     }
 
     /* Video fijo al fondo */
@@ -48,30 +49,28 @@
       pointer-events: none;
       display: block;
       transition: opacity .5s ease; /* fade controlado por JS */
+      shape-rendering: geometricPrecision; /* nitidez extra */
     }
 
     /* ====== TEXTO EN HERO ====== */
-   #headline{
-  position: fixed;
-  inset: 0;
-  z-index: 3;             /* por encima del overlay */
-  display: grid;
-  place-items: center;    /* 👈 centrado vertical y horizontal */
-  pointer-events: none;
-  /* quitamos align-items:end y padding-bottom */
-}
+    #headline{
+      position: fixed;
+      inset: 0;
+      z-index: 3;             /* por encima del overlay */
+      display: flex;
+      align-items: center;    /* centrado vertical */
+      justify-content: center;/* centrado horizontal */
+      pointer-events: none;
+      padding: 0 5vw;         /* margen lateral para móvil/desktop */
+      text-align: center;
+    }
 
     #headline .line{
-      font-family: 'Bebas Neue', sans-serif;
-      font-weight: 400;
-      letter-spacing: .5px;
-      text-transform: uppercase;
-
-      max-width: min(90vw, 1100px);
-      text-align: center;
+      /* Primera línea Bebas + segunda Lato via spans abajo */
       color: #fff;
-      font-size: clamp(26px, 6.8vmin, 68px);
-      line-height: 1.05;
+      max-width: min(90vw, 1100px);
+      font-size: clamp(24px, 6.5vmin, 68px);
+      line-height: 1.08;
 
       /* estado inicial: abajo y oculto */
       opacity: 0;
@@ -79,13 +78,31 @@
       transition: transform .7s cubic-bezier(.2,.7,0,.99), opacity .6s ease;
     }
 
-    /* FIX: selector correcto (sin el punto extra) */
     body.open #headline .line{
       opacity: 1;
       transform: translateY(0);
     }
 
-    /* ====== SECCIÓN SIGUIENTE (REVEAL) ====== */
+    .bebas{
+      font-family: 'Bebas Neue', sans-serif;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      line-height: 1.05;
+      display: inline-block;
+    }
+
+    .lato{
+      font-family: 'Lato', sans-serif;
+      font-weight: 400;
+      text-transform: none;
+      letter-spacing: 0.2px;
+      line-height: 1.3;
+      font-size: 0.9em; /* un poco más pequeño que el título */
+      display: inline-block;
+    }
+
+    /* ====== SECCIÓN SIGUIENTE (REVEAL) – (si la reactivas) ====== */
     .section{
       position: relative;
       z-index: 4;
@@ -100,8 +117,8 @@
       max-width: min(90vw, 1100px);
       color: #fff;
       text-align: center;
-      font-size: clamp(24px, 6vmin, 56px);
-      line-height: 1.12;
+      font-size: clamp(20px, 6vmin, 56px);
+      line-height: 1.18;
       opacity: 0;
       transform: translateY(42px);
       transition: transform .8s cubic-bezier(.2,.7,0,.99), opacity .6s ease;
@@ -120,24 +137,21 @@
       }
     }
 
-    .bebas{
-  font-family: 'Bebas Neue', sans-serif;
-  font-weight: 400;
-  text-transform: uppercase;
-  letter-spacing: .5px;
-  line-height: 1.05;
-}
-
-.lato{
-  font-family: 'Lato', sans-serif;
-  font-weight: 400;
-  text-transform: none;   /* se queda en minúsculas */
-  letter-spacing: 0.2px;
-  line-height: 1.3;
-  font-size: 0.9em;       /* un poco más pequeño que el título */
-}
-👉 Resultado:
-    
+    /* ====== Ajustes específicos para móvil ====== */
+    @media (max-width: 600px){
+      :root{
+        --holeBase: 14vmin;             /* logo inicia más grande en móvil */
+      }
+      #headline{ padding: 0 6vw; }
+      #headline .line{
+        font-size: clamp(20px, 7.2vmin, 42px);
+        line-height: 1.12;
+      }
+      .lato{
+        font-size: 0.95em;
+        line-height: 1.35;
+      }
+    }
   </style>
 </head>
 <body>
@@ -148,32 +162,32 @@
   </video>
 
   <!-- Overlay con máscara “knockout”: blanco=tapa, negro=hueco -->
-  <!-- FIX: usa comentarios HTML, no /* ... */ dentro del SVG -->
- 
   <svg id="overlay" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-  <defs>
-    <mask id="revealMask">
-      <!-- Fondo blanco: visible -->
-      <rect x="0" y="0" width="100" height="100" fill="white"/>
-      <!-- Logo negro: abre hueco -->
-      <image
-        href="logo-mask.svg"
-        x="50" y="50"
-        width="20" height="20"
-        preserveAspectRatio="xMidYMid meet"
-        style="
-          transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy)))
-                     scale(var(--k));
-          transform-box: fill-box;
-          transform-origin: 50% 50%;
-        "
-        fill="black"/>
-    </mask>
-  </defs>
+    <defs>
+      <mask id="revealMask">
+        <!-- Fondo blanco: visible (usar unidades del viewBox, no vw/vh) -->
+        <rect x="0" y="0" width="100" height="100" fill="white"/>
+        <!-- Logo negro: abre hueco -->
+        <image
+          href="logo-mask.svg"
+          x="50" y="50"
+          width="20" height="20"
+          preserveAspectRatio="xMidYMid meet"
+          style="
+            transform:
+              translate(calc(-50% + var(--dx)), calc(-50% + var(--dy)))
+              scale(var(--k));
+            transform-box: fill-box;
+            transform-origin: 50% 50%;
+            image-rendering: optimizeQuality;
+          "
+          />
+      </mask>
+    </defs>
 
-  <!-- Rectángulo negro con máscara -->
-  <rect x="0" y="0" width="100%" height="100%" fill="var(--overlay)" mask="url(#revealMask)"/>
-</svg>
+    <!-- Rectángulo negro con máscara -->
+    <rect x="0" y="0" width="100%" height="100%" fill="var(--overlay)" mask="url(#revealMask)"/>
+  </svg>
 
   <!-- Texto que aparece cuando el logo ya abrió -->
   <div id="headline" aria-hidden="true">
@@ -181,59 +195,67 @@
       <span class="bebas">Barrio Perro es más que una tienda:</span><br/>
       <span class="lato">es un refugio natural para perros urbanos.</span>
     </h1>
-  </div> 
+  </div>
 
-  <!-- Siguiente “pantalla” con efecto reveal desde abajo 
+  <!-- (Opcional) Siguiente “pantalla” con efecto reveal
   <section class="section">
     <h2 class="reveal">
       Barrio Perro es más que una tienda: es un refugio natural para perros urbanos.
     </h2>
-  </section> -->
+  </section>
+  -->
 
   <script>
   (function(){
-    /* ===== Parámetros de apertura ===== */
-    const MIN = 1.0;     // escala mínima del logo/hueco
-    const MAX = 18;      // escala máxima (lo tenías en 18)
-    const SPEED = 0.008; // sensibilidad del scroll
-    const OPEN_EPS = 0.05;
-
+    /* ===== Parámetros ===== */
+    const MIN = 1.0;       // escala mínima del logo/hueco
+    const MAX = 18;        // escala máxima
+    const OPEN_EPS = 0.05; // margen para considerar “abierto”
     const overlay = document.getElementById('overlay');
 
-    // ===== Utilidad =====
+    // SPEED dinámico según el scroll disponible (mejor en móvil)
+    let SPEED = 0.008;     // fallback
+    function recomputeSpeed(){
+      const doc = document.documentElement;
+      const scrollRange = Math.max(1, doc.scrollHeight - window.innerHeight);
+      // Apuntar a “abrir” cerca del 80% del scroll disponible
+      const target = Math.max(300, Math.floor(scrollRange * 0.8));
+      SPEED = (MAX - MIN) / target;
+    }
+
     function clamp(v,a,b){ return Math.max(a, Math.min(b, v)); }
 
-    // ===== Scroll principal: sincroniza apertura + texto =====
     function onScroll(){
       const y = window.scrollY || document.documentElement.scrollTop || 0;
       const k = clamp(MIN + y * SPEED, MIN, MAX);
 
-      // Actualiza escala del “agujero”
+      // Escala del “agujero” (logo)
       document.documentElement.style.setProperty('--k', String(k));
 
-      // Estado abierto/cerrado
+      // Fade del overlay + entrada del titular
       const opened = (k >= MAX - OPEN_EPS);
-
-      // Fade del overlay y entrada del titular (desde abajo)
       overlay.style.opacity = opened ? '0' : '1';
 
-      // Retardo sutil para que termine el fade del overlay
       if (opened) {
-        setTimeout(() => document.body.classList.add('open'), 80);
+        // pequeño retardo para que termine el fade
+        if (!document.body.classList.contains('open')) {
+          setTimeout(() => document.body.classList.add('open'), 60);
+        }
       } else {
         document.body.classList.remove('open');
       }
     }
 
-    // Listeners (NO duplicar)
+    // Listeners
+    window.addEventListener('resize', () => { recomputeSpeed(); onScroll(); });
+    window.addEventListener('orientationchange', () => { recomputeSpeed(); onScroll(); });
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('load', onScroll);
+    window.addEventListener('load', () => { recomputeSpeed(); onScroll(); });
 
-    // ===== Reveal “desde abajo” en la sección siguiente =====
+    // Reveal “desde abajo” en la sección siguiente (si la usas)
     const io = new IntersectionObserver((entries) => {
       entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
     }, { threshold: 0.15, rootMargin: '0px 0px -10%' });
-
     document.querySelectorAll('.reveal').forEach(el => io.observe(el));
   })();
   </script>
