@@ -13,7 +13,7 @@
   <style>
     :root{
       --overlay: #000000;
-      --holeBase: 2vmin;      /* tamaño base del logo/hueco (desktop) CAMBIE de 2 a -2 */
+      --holeBase: 2.5vmin;      /* tamaño base del logo/hueco (desktop) CAMBIE 5 a 2 */
       --dx: 0vmin;            /* ajuste fino X */
       --dy: .15vmin;          /* ajuste fino Y */
       --k: 1;                 /* escala dinámica (JS) */
@@ -142,7 +142,7 @@
     /* ====== Ajustes específicos para móvil ====== */
     @media (max-width: 600px){
       :root{
-        --holeBase: 6vmin;             /* logo inicia más grande en móvil */
+        --holeBase: 5.5vmin;             /* logo inicia más grande en móvil */
       }
       #headline{ padding: 0 6vw; }
       #headline .line{
@@ -332,7 +332,7 @@
   <script>
   (function(){
     /* ===== Parámetros ===== */
-    const MIN = 1.0;       // escala mínima del logo/hueco
+    const MIN = .55;       // escala mínima del logo/hueco
     const MAX = 18;        // escala máxima
     const OPEN_EPS = 0.05; // margen para considerar “abierto”
     const overlay = document.getElementById('overlay');
