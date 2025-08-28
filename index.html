@@ -13,7 +13,7 @@
   <style>
     :root{
       --overlay: #000000;
-      --holeBase: -2vmin;      /* tamaño base del logo/hueco (desktop) CAMBIE de 2 a -2 */
+      --holeBase: 2vmin;      /* tamaño base del logo/hueco (desktop) CAMBIE de 2 a -2 */
       --dx: 0vmin;            /* ajuste fino X */
       --dy: .15vmin;          /* ajuste fino Y */
       --k: 1;                 /* escala dinámica (JS) */
@@ -142,7 +142,7 @@
     /* ====== Ajustes específicos para móvil ====== */
     @media (max-width: 600px){
       :root{
-        --holeBase: 8vmin;             /* logo inicia más grande en móvil */
+        --holeBase: 6vmin;             /* logo inicia más grande en móvil */
       }
       #headline{ padding: 0 6vw; }
       #headline .line{
