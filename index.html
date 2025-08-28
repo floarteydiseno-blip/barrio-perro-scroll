@@ -162,12 +162,25 @@
   </video>
 
   <!-- Overlay con máscara “knockout”: blanco=tapa, negro=hueco -->
-<svg id="overlay" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-     viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+<svg id="overlay"
+     xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink"
+     viewBox="0 0 100 100"
+     preserveAspectRatio="xMidYMid slice"
+     aria-hidden="true">
   <defs>
-    <!-- Logo inline con su viewBox real -->
-    <symbol id="logo-symbol" viewBox="0 0 500 500">
-      <path fill-rule="evenodd" clip-rule="evenodd" d="M9.36,4.5c161.72,0,323.43,0,485.14,0c0,162,0,324,0,486c-162,0-324,0-486,0
+    <!-- 1) Estilo que FUERZA negro en TODO el símbolo, sin tocar tus paths -->
+    <style>
+      /* Cualquier contenido del símbolo usado dentro de ESTA máscara será negro */
+      #overlay .force-mask-black *{
+        fill:#000 !important;
+        stroke:#000 !important;
+      }
+    </style>
+
+    <!-- 2) Tu logo inline con su viewBox real -->
+    <symbol id="logo-symbol" viewBox="0 0 500 500" class="force-mask-black">
+     <path fill-rule="evenodd" clip-rule="evenodd" d="M9.36,4.5c161.72,0,323.43,0,485.14,0c0,162,0,324,0,486c-162,0-324,0-486,0
 	c0-161.14,0-322.28,0-483.43C8.43,5.85,8.36,4.64,9.36,4.5z M341.07,22.5c-20.7,24.92-16.16,71.75-38.57,98.57
 	c-17.89,21.41-47.92,33.08-77.14,41.14c-30.87,8.52-65.7,12.72-105.43,12.86c-13.53-13.99-26.03-37.45-28.29-64.29
 	c-1.51-18.03,3.01-38.25,5.14-52.29C79.6,72.82,65.41,95,63.36,123.64c-2.59,36.1,15.03,64.97,30,85.71
@@ -285,46 +298,34 @@
 	C130.78,282.68,124.8,290.69,128.5,295.93z"/>
 <path fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFFF" d="M135.36,288.21c-0.24,4.62-2.89,6.83-6.86,7.71
 	C124.8,290.69,130.78,282.68,135.36,288.21z"/>
-
     </symbol>
 
-    <!-- Filtro que vuelve TODO negro (RGB=0) preservando alfa -->
-    <filter id="toBlack" color-interpolation-filters="sRGB">
-      <feColorMatrix type="matrix" values="
-        0 0 0 0 0
-        0 0 0 0 0
-        0 0 0 0 0
-        0 0 0 1 0"/>
-    </filter>
-
-    <!-- Máscara: blanco tapa (opaco), negro abre agujero (transparente) -->
+    <!-- 3) Máscara por luminancia: blanco tapa, negro abre el hueco -->
     <mask id="revealMask" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" mask-type="luminance">
       <!-- Fondo blanco que mantiene opaco todo el rectángulo -->
       <rect x="0" y="0" width="100" height="100" fill="#fff"/>
-
-      <!-- Contenedor SVG interno: acepta var(--holeBase) y CSS transforms de forma consistente en móvil -->
-      <svg x="50%" y="50%"
-           style="
-             width: var(--holeBase);
-             height: var(--holeBase);
-             transform:
-               translate(calc(-50% + var(--dx)), calc(-50% + var(--dy)))
-               scale(var(--k));
-             transform-origin: 50% 50%;
-             overflow: visible;
-             filter: url(#toBlack);
-           ">
-        <!-- Doble referencia por compatibilidad -->
-        <use href="#logo-symbol"></use>
-        <use xlink:href="#logo-symbol"></use>
-      </svg>
+      <!-- Logo NEGRO (por CSS !important en .force-mask-black) -->
+      <g style="
+           transform: translate(var(--dx), var(--dy)) scale(var(--k));
+           transform-box: fill-box; transform-origin: 50% 50%;
+         ">
+        <!-- Usamos unidades del viewBox 0..100 para centrar -->
+        <use href="#logo-symbol"
+             x="50" y="50"
+             width="var(--holeBase)" height="var(--holeBase)"
+             transform="translate(calc(-0.5 * var(--holeBase)), calc(-0.5 * var(--holeBase)))"></use>
+        <!-- Doble referencia por compatibilidad SVG 1.1 -->
+        <use xlink:href="#logo-symbol"
+             x="50" y="50"
+             width="var(--holeBase)" height="var(--holeBase)"
+             transform="translate(calc(-0.5 * var(--holeBase)), calc(-0.5 * var(--holeBase)))"></use>
+      </g>
     </mask>
   </defs>
 
-  <!-- Rect negro que cubre todo; la máscara abre el hueco -->
+  <!-- 4) Rect negro que cubre todo; la máscara abre el hueco del logo -->
   <rect x="0" y="0" width="100%" height="100%" fill="var(--overlay)" mask="url(#revealMask)"/>
 </svg>
-
 
   <!-- Texto que aparece cuando el logo ya abrió -->
   <div id="headline" aria-hidden="true">
