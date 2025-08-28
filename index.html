@@ -13,7 +13,7 @@
   <style>
     :root{
       --overlay: #000000;
-      --holeBase: 5vmin;      /* tamaño base del logo/hueco (desktop) */
+      --holeBase: 2vmin;      /* tamaño base del logo/hueco (desktop) CAMBIE de 5 a 2 */
       --dx: 0vmin;            /* ajuste fino X */
       --dy: .15vmin;          /* ajuste fino Y */
       --k: 1;                 /* escala dinámica (JS) */
@@ -24,7 +24,7 @@
       background: #000;
       overflow-x: hidden;
       /* En móvil, vh varía con la barra del navegador; usa min-height NUEVO CAMBIO*/
-      min-height: 540vh;
+      min-height: 320vh;    /*Cambié de 540 a 320*/
       height: auto;
     }
 
@@ -284,19 +284,23 @@
     <mask id="revealMask" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" mask-type="luminance">
       <!-- Fondo blanco: deja todo opaco, salvo donde el logo sea negro -->
       <rect x="0" y="0" width="100" height="100" fill="#fff"/>
+<!-- CONTENEDOR 1: solo posiciona al centro del viewport (no escala) -->
+  <svg x="50%" y="50%"
+       style="
+         width: var(--holeBase);
+         height: var(--holeBase);
+         transform: translate(-50%, -50%) translate(var(--dx), var(--dy));
+         /* nada de scale aquí */
+         overflow: visible;
+       ">
 
-      <!-- Usamos un <svg> interno para poder usar var(--holeBase) y transforms con var() -->
-      <svg x="50%" y="50%"
-           style="
-             width: var(--holeBase);
-             height: var(--holeBase);
-             transform:
-                translate(-50%, -50%)
-        		translate(var(--dx), var(--dy))
-         		scale(var(--k));
-      		 transform-origin: 50% 50%;
-             overflow: visible;
-           ">
+    <!-- CONTENEDOR 2: solo escala desde el centro (no traduce) -->
+    <g style="
+         transform: scale(var(--k));
+         transform-origin: 50% 50%;
+         transform-box: fill-box;
+       ">
+     
         <!-- Doble referencia por compatibilidad -->
         <use href="#logo-symbol"></use>
         <use xlink:href="#logo-symbol"></use>
