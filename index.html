@@ -14,9 +14,7 @@
     :root{
       --overlay: #000000;
       --holeBase: 2.5vmin;      /* tamaño base del logo/hueco (desktop) CAMBIE 5 a 2 */
-      --dxp: 0%;           /* ajuste fino horizontal en % */
-  	  --dyp: 0%;           /* ajuste fino vertical en % */
-	  /*--dx: 0vmin;            /* ajuste fino X 
+      --dx: 0vmin;            /* ajuste fino X */
       --dy: .15vmin;          /* ajuste fino Y */
       --k: 1;                 /* escala dinámica (JS) */
     }
@@ -144,11 +142,9 @@
     /* ====== Ajustes específicos para móvil ====== */
     @media (max-width: 600px){
       :root{
-        --holeBase: 4.5vmin;  	/* logo inicia más grande en móvil 
-		--dx: -.5vmin;   		/* mueve un poco a la derecha 
-    	--dy: -.3vmin;  		/* sube un poco */
-	    --dxp: 0%;            /* si quedara a la izq., prueba +2% */
-        --dyp: 0%;            /* si quedara abajo, prueba -2% */
+        --holeBase: 4.8vmin;  	/* logo inicia más grande en móvil */
+		--dx: -20vmin;   		/* mueve un poco a la derecha */
+    	--dy: -20vmin;  		/* sube un poco */
       }
       #headline{ padding: 0 6vw; }
       #headline .line{
@@ -295,8 +291,9 @@
        style="
          width: var(--holeBase);
          height: var(--holeBase);
-         transform: translate(calc(-50% + var(--dxp)), calc(-50% + var(--dyp))); 
-	     overflow: visible;
+         transform: translate(-50%, -50%) translate(var(--dx), var(--dy));
+         /* nada de scale aquí */
+         overflow: visible;
        ">
 
     <!-- CONTENEDOR 2: solo escala desde el centro (no traduce) -->
@@ -376,13 +373,10 @@
     }
 
     // Listeners
-    window.addEventListener('load', () => { document.documentElement.style.setProperty('--k', String(MIN));
-  recomputeSpeed();
-  onScroll();
-	  window.addEventListener('resize', () => { recomputeSpeed(); onScroll(); });
+    window.addEventListener('resize', () => { recomputeSpeed(); onScroll(); });
     window.addEventListener('orientationchange', () => { recomputeSpeed(); onScroll(); });
     window.addEventListener('scroll', onScroll, { passive: true });
-    
+    window.addEventListener('load', () => { recomputeSpeed(); onScroll(); });
 
     // Reveal “desde abajo” en la sección siguiente (si la usas)
     const io = new IntersectionObserver((entries) => {
