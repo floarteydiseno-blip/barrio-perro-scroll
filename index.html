@@ -142,9 +142,9 @@
     /* ====== Ajustes específicos para móvil ====== */
     @media (max-width: 600px){
       :root{
-        --holeBase: 4.8vmin;  	/* logo inicia más grande en móvil */
-		--dx: -20vmin;   		/* mueve un poco a la derecha */
-    	--dy: -20vmin;  		/* sube un poco */
+        --holeBase: 6vmin;  	/* logo inicia más grande en móvil */
+		--dx: 0vmin;   		/* mueve un poco a la derecha */
+    	--dy: 0vmin;  		/* sube un poco */
       }
       #headline{ padding: 0 6vw; }
       #headline .line{
@@ -284,30 +284,34 @@
 
     <!-- Máscara por luminancia: BLANCO = tapa, NEGRO = abre hueco -->
     <mask id="revealMask" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" mask-type="luminance">
-      <!-- Fondo blanco: deja todo opaco, salvo donde el logo sea negro -->
-      <rect x="0" y="0" width="100" height="100" fill="#fff"/>
-<!-- CONTENEDOR 1: solo posiciona al centro del viewport (no escala) -->
-  <svg x="50%" y="50%"
-       style="
-         width: var(--holeBase);
-         height: var(--holeBase);
-         transform: translate(-50%, -50%) translate(var(--dx), var(--dy));
-         /* nada de scale aquí */
-         overflow: visible;
-       ">
+  <!-- Fondo blanco: deja todo opaco -->
+  <rect x="0" y="0" width="100" height="100" fill="#fff"/>
 
-    <!-- CONTENEDOR 2: solo escala desde el centro (no traduce) -->
+  <!-- CONTENEDOR 1: centra en viewport, NO escala -->
+  <svg
+    x="50%" y="50%"
+    viewBox="0 0 500 500"
+    style="
+      width: var(--holeBase);
+      height: var(--holeBase);
+      transform: translate(-50%, -50%) translate(var(--dx), var(--dy));
+      overflow: visible;
+    "
+    preserveAspectRatio="xMidYMid meet"
+  >
+    <!-- CONTENEDOR 2: SOLO escala desde el centro -->
     <g style="
-         transform: scale(var(--k));
-         transform-origin: 50% 50%;
-         transform-box: fill-box;
-       ">
-     
-        <!-- Doble referencia por compatibilidad -->
-        <use href="#logo-symbol"></use>
-        <use xlink:href="#logo-symbol"></use>
-      </svg>
-    </mask>
+      transform: scale(var(--k));
+      transform-origin: 50% 50%;
+      transform-box: fill-box;
+    ">
+      <!-- Doble referencia por compatibilidad -->
+      <use href="#logo-symbol" width="100%" height="100%"></use>
+      <use xlink:href="#logo-symbol" width="100%" height="100%"></use>
+    </g>
+  </svg>
+</mask>
+
   </defs>
 
   <!-- Rectángulo negro que cubre todo; el logo NEGRO en la máscara abre el hueco -->
