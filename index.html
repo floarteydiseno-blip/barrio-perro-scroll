@@ -291,9 +291,10 @@
              width: var(--holeBase);
              height: var(--holeBase);
              transform:
-               translate(calc(-50% + var(--dx)), calc(-50% + var(--dy)))
-               scale(var(--k));
-             transform-origin: 50% 50%;
+                translate(-50%, -50%)
+        		translate(var(--dx), var(--dy))
+         		scale(var(--k));
+      		 transform-origin: center center;
              overflow: visible;
            ">
         <!-- Doble referencia por compatibilidad -->
