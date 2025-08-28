@@ -288,30 +288,29 @@
 <path d="M135.36,288.21c-0.24,4.62-2.89,6.83-6.86,7.71C124.8,290.69,130.78,282.68,135.36,288.21z"/>
     </symbol>
 
-    <!-- 3) Máscara por luminancia: blanco tapa, negro abre el hueco -->
+       <!-- 3) Máscara por luminancia -->
     <mask id="revealMask" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" mask-type="luminance">
-      <!-- Fondo blanco que mantiene opaco todo el rectángulo -->
+      <!-- Fondo blanco = opaco -->
       <rect x="0" y="0" width="100" height="100" fill="#fff"/>
-      <!-- Logo NEGRO (por CSS !important en .force-mask-black) -->
-      <g style="
-           transform: translate(var(--dx), var(--dy)) scale(var(--k));
-           transform-box: fill-box; transform-origin: 50% 50%;
-         ">
-        <!-- Usamos unidades del viewBox 0..100 para centrar -->
-        <use href="#logo-symbol"
-             x="50" y="50"
-             width="var(--holeBase)" height="var(--holeBase)"
-             transform="translate(calc(-0.5 * var(--holeBase)), calc(-0.5 * var(--holeBase)))"></use>
-        <!-- Doble referencia por compatibilidad SVG 1.1 -->
-        <use xlink:href="#logo-symbol"
-             x="50" y="50"
-             width="var(--holeBase)" height="var(--holeBase)"
-             transform="translate(calc(-0.5 * var(--holeBase)), calc(-0.5 * var(--holeBase)))"></use>
-      </g>
+      <!-- Contenedor SVG interno: acepta var(--holeBase) en CSS -->
+      <svg x="50%" y="50%"
+           style="
+             width: var(--holeBase);
+             height: var(--holeBase);
+             transform:
+               translate(calc(-50% + var(--dx)), calc(-50% + var(--dy)))
+               scale(var(--k));
+             transform-origin: 50% 50%;
+             overflow: visible;
+           ">
+        <!-- Doble referencia por compatibilidad -->
+        <use href="#logo-symbol"></use>
+        <use xlink:href="#logo-symbol"></use>
+      </svg>
     </mask>
   </defs>
 
-  <!-- 4) Rect negro que cubre todo; la máscara abre el hueco del logo -->
+  <!-- 4) Rect negro que cubre todo; la máscara abre el hueco -->
   <rect x="0" y="0" width="100%" height="100%" fill="var(--overlay)" mask="url(#revealMask)"/>
 </svg>
 
