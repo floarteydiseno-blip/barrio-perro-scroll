@@ -171,18 +171,9 @@
      preserveAspectRatio="xMidYMid slice"
      aria-hidden="true">
   <defs>
-    <!-- 1) Estilo que FUERZA negro en TODO el símbolo, sin tocar tus paths -->
-    <style>
-      /* Cualquier contenido del símbolo usado dentro de ESTA máscara será negro NUEVO*/
-      #overlay .force-mask-black *{
-        fill:#000 !important;
-        stroke:#000 !important;
-      }
-    </style>
-
-    <!-- 2) Tu logo inline con su viewBox real -->
-    <symbol id="logo-symbol" viewBox="0 0 500 500" class="force-mask-black">
-    <path fill="#FFFFFF" d="M9.36,4.5c161.72,0,323.43,0,485.14,0c0,162,0,324,0,486c-162,0-324,0-486,0c0-161.14,0-322.28,0-483.43
+    <!-- Tu logo tal cual, con sus blancos y negros -->
+    <symbol id="logo-symbol" viewBox="0 0 500 500">
+       <path fill="#FFFFFF" d="M9.36,4.5c161.72,0,323.43,0,485.14,0c0,162,0,324,0,486c-162,0-324,0-486,0c0-161.14,0-322.28,0-483.43
 	C8.43,5.85,8.36,4.64,9.36,4.5z M341.07,22.5c-20.7,24.92-16.16,71.75-38.57,98.57c-17.89,21.41-47.92,33.08-77.14,41.14
 	c-30.87,8.52-65.7,12.72-105.43,12.86c-13.53-13.99-26.03-37.45-28.29-64.29c-1.51-18.03,3.01-38.25,5.14-52.29
 	C79.6,72.82,65.41,95,63.36,123.64c-2.59,36.1,15.03,64.97,30,85.71C75.94,284.14,58.71,361.5,41.93,436.5
@@ -286,32 +277,15 @@
 	c9-3.34,23.37-6.66,25.71,3.43C149.41,295.59,136.7,302.92,125.93,306.21z M128.5,295.93c3.97-0.89,6.62-3.1,6.86-7.71
 	C130.78,282.68,124.8,290.69,128.5,295.93z"/>
 <path d="M135.36,288.21c-0.24,4.62-2.89,6.83-6.86,7.71C124.8,290.69,130.78,282.68,135.36,288.21z"/>
+
     </symbol>
 
-       <!-- 3) Máscara por luminancia -->
+    <!-- Máscara por luminancia: BLANCO = tapa, NEGRO = abre hueco -->
     <mask id="revealMask" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" mask-type="luminance">
-      <!-- Fondo blanco = opaco -->
+      <!-- Fondo blanco: deja todo opaco, salvo donde el logo sea negro -->
       <rect x="0" y="0" width="100" height="100" fill="#fff"/>
-      <!-- Logo (forzado a negro por CSS arriba) -->
-      <g style="
-           transform: translate(var(--dx), var(--dy)) scale(var(--k));
-           transform-box: fill-box;
-           transform-origin: 50% 50%;
-         ">
-        <!-- referencia al símbolo -->
-        <use href="#logo-symbol"
-             x="50" y="50"
-             width="var(--holeBase)" height="var(--holeBase)"
-             transform="translate(calc(-0.5 * var(--holeBase)), calc(-0.5 * var(--holeBase)))"/>
-        <use xlink:href="#logo-symbol"
-             x="50" y="50"
-             width="var(--holeBase)" height="var(--holeBase)"
-             transform="translate(calc(-0.5 * var(--holeBase)), calc(-0.5 * var(--holeBase)))"/>
-      </g>
-    </mask>
-  </defs>
-		
-      <!-- Contenedor SVG interno: acepta var(--holeBase) en CSS 
+
+      <!-- Usamos un <svg> interno para poder usar var(--holeBase) y transforms con var() -->
       <svg x="50%" y="50%"
            style="
              width: var(--holeBase);
@@ -322,16 +296,17 @@
              transform-origin: 50% 50%;
              overflow: visible;
            ">
-        <!-- Doble referencia por compatibilidad 
+        <!-- Doble referencia por compatibilidad -->
         <use href="#logo-symbol"></use>
         <use xlink:href="#logo-symbol"></use>
       </svg>
     </mask>
-  </defs> -->
+  </defs>
 
-  <!-- 4) Rect negro que cubre todo; la máscara abre el hueco -->
+  <!-- Rectángulo negro que cubre todo; el logo NEGRO en la máscara abre el hueco -->
   <rect x="0" y="0" width="100%" height="100%" fill="var(--overlay)" mask="url(#revealMask)"/>
 </svg>
+
 
   <!-- Texto que aparece cuando el logo ya abrió -->
   <div id="headline" aria-hidden="true">
