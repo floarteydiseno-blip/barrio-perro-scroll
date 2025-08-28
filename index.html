@@ -14,7 +14,9 @@
     :root{
       --overlay: #000000;
       --holeBase: 2.5vmin;      /* tamaño base del logo/hueco (desktop) CAMBIE 5 a 2 */
-      --dx: 0vmin;            /* ajuste fino X */
+      --dxp: 0%;           /* ajuste fino horizontal en % */
+  	  --dyp: 0%;           /* ajuste fino vertical en % */
+	  /*--dx: 0vmin;            /* ajuste fino X 
       --dy: .15vmin;          /* ajuste fino Y */
       --k: 1;                 /* escala dinámica (JS) */
     }
@@ -140,11 +142,13 @@
     }
 
     /* ====== Ajustes específicos para móvil ====== */
-    @media (max-width: 200px){
+    @media (max-width: 600px){
       :root{
-        --holeBase: 5.5vmin;  	/* logo inicia más grande en móvil */
-		--dx: -20vmin;   		/* mueve un poco a la derecha */
-    	--dy: -20vmin;  		/* sube un poco */
+        --holeBase: 4.5vmin;  	/* logo inicia más grande en móvil 
+		--dx: -.5vmin;   		/* mueve un poco a la derecha 
+    	--dy: -.3vmin;  		/* sube un poco */
+	    --dxp: 0%;            /* si quedara a la izq., prueba +2% */
+        --dyp: 0%;            /* si quedara abajo, prueba -2% */
       }
       #headline{ padding: 0 6vw; }
       #headline .line{
@@ -291,9 +295,8 @@
        style="
          width: var(--holeBase);
          height: var(--holeBase);
-         transform: translate(-50%, -50%) translate(var(--dx), var(--dy));
-         /* nada de scale aquí */
-         overflow: visible;
+         transform: translate(calc(-50% + var(--dxp)), calc(-50% + var(--dyp))); 
+	     overflow: visible;
        ">
 
     <!-- CONTENEDOR 2: solo escala desde el centro (no traduce) -->
