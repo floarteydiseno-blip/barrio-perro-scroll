@@ -163,31 +163,84 @@
 
   <!-- Overlay con máscara “knockout”: blanco=tapa, negro=hueco -->
   <svg id="overlay" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-    <defs>
-      <mask id="revealMask">
-        <!-- Fondo blanco: visible (usar unidades del viewBox, no vw/vh) -->
-        <rect x="0" y="0" width="100" height="100" fill="white"/>
-        <!-- Logo negro: abre hueco -->
-        <image
-          href="logo-mask.svg"
-          x="50" y="50"
-          width="20" height="20"
-          preserveAspectRatio="xMidYMid meet"
-          style="
-            transform:
-              translate(calc(-50% + var(--dx)), calc(-50% + var(--dy)))
-              scale(var(--k));
-            transform-box: fill-box;
-            transform-origin: 50% 50%;
-            image-rendering: optimizeQuality;
-          "
-          />
-      </mask>
-    </defs>
+  <defs>
+    <!-- Logo inline con viewBox real -->
+    <symbol id="logo-symbol" viewBox="0 0 500 500">
+      <!-- 🔽 Todo tu logo en paths 🔽 -->
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M9.36,4.5c161.72,0,323.43,0,485.14,0c0,162,0,324,0,486c-162,0-324,0-486,0
+        c0-161.14,0-322.28,0-483.43C8.43,5.85,8.36,4.64,9.36,4.5z M341.07,22.5c-20.7,24.92-16.16,71.75-38.57,98.57
+        ..."/>
+      <path fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFFF" d="M341.93,22.5c7.77,13.37,6.89,35.4,9.43,54
+        ..."/>
+      <path fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFFF" d="M60.79,47.36C51.9,63.83,38.09,74.69,35.93,97.93
+        ..."/>
+      <path fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFFF" d="M65.93,72.21c-7.72,12.46-19.3,25.64-15.43,44.57
+        ..."/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M400.21,83.36c1.79,3.58,0.58,8.3-1.71,10.29c-2,0-4,0-6,0
+        ..."/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M353.93,152.79c6.51,19.8-1.65,43.93-20.57,41.14
+        ..."/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M320.5,158.79c-0.43,13.85,1.32,29.89-3.43,39.43c-3.91,0.13-3.36,0.71-6.86,0
+        ..."/>
+      <path fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFFF" d="M342.79,158.79c4.77,5.51,3.72,23.93-3.43,25.71
+        ..."/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M299.07,186.21c1.58,6.41,6.12,13.5,4.29,20.57c-3.17,0.58-6.05,1.95-8.57,0.86
+        ..."/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M269.93,172.5c5.94,8.53-0.77,18.25-5.14,24c1.29,9.28,6.66,14.49,7.71,24
+        ..."/>
+      <path fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFFF" d="M293.07,172.5c3.02,4.72-1.88,10.85-6,8.57
+        ..."/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M219.36,178.5c1.41,7.17,4.16,18.62,6,30.86c2.44,16.24,9.94,36.79-6.86,35.14
+        ..."/>
+      <path fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFFF" d="M258.79,181.07c1.07,5.94-3.36,10.9-6.86,9.43
+        ..."/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M171.36,220.5c16.4,30.02-18.78,54.62-49.71,48c-0.27-10.97,2.31-22.53,4.29-35.14
+        ..."/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M327.36,199.07c23.81-2.93,24.78,13.62,24,34.29c-0.51,13.45-0.94,27.15-6,36.86
+        ..."/>
+      <path fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFFF" d="M207.36,203.36c2.57,4.31,4.96,12.83-3.43,12.86
+        ..."/>
+      <path fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFFF" d="M159.36,208.5c-1.61,4.83-5.17,11.77-12,8.57
+        ..."/>
+      <path fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFFF" d="M326.5,217.07c8.61,8.65,3.8,53.94-8.57,52.29
+        ..."/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M273.36,265.93c2.21,8.94,7.14,15.14,7.71,25.71c-2.56,3.44-7.12,4.88-13.71,4.29
+        ..."/>
+      <path fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFFF" d="M156.79,236.79c0.13,8.98-4.32,13.39-12,14.57
+        ..."/>
+      <path fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFFF" d="M265.64,243.64c0.9,8.62-4.54,14.48-11.14,12.86
+        ..."/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M217.64,280.5c2.34,8.44,13.96,28.49-6,25.71c-4.53-4.9-5.5-13.36-9.43-18.86
+        ..."/>
+      <path fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFFF" d="M211.64,260.79c0.56,7.7-1.62,12.66-9.43,12
+        ..."/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M179.93,264.21c1.53,13.25-17.48,5.95-18,17.14c1.34,3.24,8.22,0.92,11.14,2.57
+        ..."/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M125.93,306.21c-4.62,5.67-0.66,19.91-12,18.86c-1.88-12.77,2.27-33.5,6.86-45.43
+        ..."/>
+      <path fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFFF" d="M135.36,288.21c-0.24,4.62-2.89,6.83-6.86,7.71
+        ..."/>
+    </symbol>
 
-    <!-- Rectángulo negro con máscara -->
-    <rect x="0" y="0" width="100%" height="100%" fill="var(--overlay)" mask="url(#revealMask)"/>
-  </svg>
+    <mask id="revealMask">
+      <!-- Fondo blanco = visible -->
+      <rect x="0" y="0" width="100" height="100" fill="white"/>
+      <!-- Logo en negro = hueco -->
+      <g style="transform: translate(var(--dx), var(--dy)) scale(var(--k));
+                transform-box: fill-box; transform-origin: 50% 50%;">
+        <use href="#logo-symbol"
+             x="50" y="50"
+             width="var(--holeBase)" height="var(--holeBase)"
+             transform="translate(calc(-0.5 * var(--holeBase)), calc(-0.5 * var(--holeBase)))"
+             style="fill:black; stroke:black; stroke-width:1;" />
+      </g>
+    </mask>
+  </defs>
+
+  <!-- Rectángulo negro que tapa todo; la máscara abre el hueco -->
+  <rect x="0" y="0" width="100%" height="100%" fill="var(--overlay)" mask="url(#revealMask)"/>
+</svg>
+
 
   <!-- Texto que aparece cuando el logo ya abrió -->
   <div id="headline" aria-hidden="true">
