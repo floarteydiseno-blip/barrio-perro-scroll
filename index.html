@@ -17,6 +17,9 @@
       --dx: 0vmin;            /* ajuste fino X */
       --dy: .15vmin;          /* ajuste fino Y */
       --k: 1;                 /* escala dinámica (JS) */
+		/* Tamaños de titulares */
+--bebasSize: clamp(72px, 16vmax, 420px);
+--latoSize: clamp(24px, 6vmin, 120px);
     }
 
     html, body{
@@ -52,60 +55,26 @@
       shape-rendering: geometricPrecision; /* nitidez extra NUEVA */
     }
 
-    /* ====== TEXTO EN HERO ====== */
-    #headline{
-      position: fixed;
-      inset: 0;
-      z-index: 3;             /* por encima del overlay */
-      display: grid;
-      place-items: center;    /* 👈 centrado vertical y horizontal */
- 		/*display: flex;
-      align-items: center;    /* centrado vertical 
-      justify-content: center;/* centrado horizontal */
-      pointer-events: none;
-      padding: 0 5vw;         /* margen lateral para móvil/desktop */
-      text-align: center;
-    }
-
-    #headline .line{
-      /* Primera línea Bebas + segunda Lato via spans abajo */
-      color: #fff;
-      /*max-width: min(90vw, 1100px);*/
-      font-family: "Bebas Neue", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif !important;
-	  font-size: clamp(48px, 20vmin, 160px) !important;
-      line-height: 1.08;
-      letter-spacing: 0.02em;
-	  text-align: center;
-		
-      /* estado inicial: abajo y oculto */
-      opacity: 0;
-      transform: translateY(12vh);
-      transition: transform .7s cubic-bezier(.2,.7,0,.99), opacity .6s ease;
-    }
-
-    body.open #headline .line{
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .bebas{
-      font-family: 'Bebas Neue', sans-serif;
-      font-weight: 400;
-      text-transform: uppercase;
-      letter-spacing: .5px;
-      line-height: 2;
-      display: inline-block;
-    }
-
-    .lato{
-      font-family: 'Lato', sans-serif;
-      font-weight: 400;
-      text-transform: none;
-      letter-spacing: 0.2px;
-      line-height: 1.3;
-      font-size: 1.1em; /* un poco más pequeño que el título */
-      display: inline-block;
-    }
+/* Titular sobre el video */
+#headline{
+position: fixed; inset: 0;
+z-index: 3; display: grid; place-items: center;
+pointer-events: none; padding: 0 5vw; text-align: center;
+}
+#headline .line{
+margin: 0; color: #fff; line-height: 1;
+opacity: 0; transform: translateY(12vh);
+transition: transform .7s cubic-bezier(.2,.7,0,.99), opacity .6s ease;
+}
+#headline .bebas{
+font-family: "Bebas Neue", sans-serif; display: inline-block;
+font-size: var(--bebasSize); line-height: .9; letter-spacing: .02em; text-transform: uppercase;
+}
+#headline .lato{
+font-family: "Lato", sans-serif; display: inline-block;
+font-size: var(--latoSize); line-height: 1.05; letter-spacing: .015em;
+}
+body.open #headline .line{ opacity: 1; transform: translateY(0); }
 
     /* ====== SECCIÓN SIGUIENTE (REVEAL) – (si la reactivas) ====== */
     .section{
@@ -160,28 +129,7 @@
         line-height: 1.35;
       }
     }
-	  #headline .bebas{
-  font-family: "Bebas Neue", sans-serif !important;
-  font-size: clamp(64px, 40vmin, 240px) !important; /* súbelo si lo quieres aún más grande */
-  line-height: 0.9;
-  letter-spacing: 0.02em;
-  display: inline-block; /* evita cortes por line-height del h1 */
-}
-	  /* --- TITULAR: BEBAS 50% MÁS GRANDE QUE LATO --- */
-#headline .lato{
-  font-family: "Lato", sans-serif !important;
-  font-size: clamp(42px, 12vmin, 160px) !important;   /* base */
-  line-height: 1.1;
-}
 
-#headline .bebas{
-  font-family: "Bebas Neue", sans-serif !important;
-  font-size: clamp(64px, 20vmin, 240px) !important;  /* 1.5× que Lato */
-  line-height: 0.9;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  display: inline-block;
-}
   </style>
 </head>
 <body>
