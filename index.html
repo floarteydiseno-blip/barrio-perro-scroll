@@ -61,7 +61,7 @@
 #headline{
 position: fixed; inset: 0;
 z-index: 3; display: grid; place-items: center;
-pointer-events: none; padding: 0 5vw; text-align: center;
+pointer-events: none; padding: 0 5vw; text-align: justify;
 }
 #headline .line{
 margin: 0; color: #fff; line-height: 1;
@@ -78,26 +78,6 @@ font-family: "Lato", sans-serif; display: inline-block;
 font-size: var(--latoSize); line-height: 1.05; letter-spacing: .015em;
 }
 body.open #headline .line{ opacity: 1; transform: translateY(0); }
-
-/* Contenedor centrado y con ancho común para ambas líneas */
-#headline .line{
-  width: min(92vw, 1200px);
-  margin: 0 auto;
-  text-align: left;       /* el “justify” lo aplicamos por línea */
-}
-
-/* Cada línea: una sola línea, justificada y con truco ::after para justificar single-line */
-#headline .row{
-  display: block;
-  white-space: nowrap;     /* fuerza una sola línea */
-  text-align: justify;     /* estira espacios hasta los bordes del contenedor */
-  text-justify: inter-word;
-}
-#headline .row::after{
-  content: "";
-  display: inline-block;
-  width: 100%;             /* <-- truco para que JUSTIFY funcione en una sola línea */
-}
 
 
     /* ====== SECCIÓN SIGUIENTE (REVEAL) – (si la reactivas) ====== */
