@@ -72,7 +72,7 @@
       color: #fff;
       /*max-width: min(90vw, 1100px);*/
       font-family: "Bebas Neue", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif !important;
-	  font-size: clamp(48px, 16vmin, 160px) !important;
+	  font-size: clamp(48px, 20vmin, 160px) !important;
       line-height: 1.08;
       letter-spacing: 0.02em;
 	  text-align: center;
@@ -93,7 +93,7 @@
       font-weight: 400;
       text-transform: uppercase;
       letter-spacing: .5px;
-      line-height: 1.05;
+      line-height: 2;
       display: inline-block;
     }
 
@@ -123,7 +123,7 @@
       font-family: "Bebas Neue", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif !important;
 	  color: #fff;
       text-align: center;
-      font-size: clamp(40px, 10vmin, 140px);
+      font-size: clamp(48px, 20vmin, 200px);
       line-height: 1.18;
       opacity: 0;
       transform: translateY(42px);
@@ -152,7 +152,7 @@
       }
       #headline{ padding: 0 6vw; }
       #headline .line{
-        font-size: clamp(40px, 16vmin, 140px);
+        font-size: clamp(48px, 16vmin, 200px);
         line-height: 1.12;
       }
       .lato{
@@ -160,6 +160,13 @@
         line-height: 1.35;
       }
     }
+	  #headline .bebas{
+  font-family: "Bebas Neue", sans-serif !important;
+  font-size: clamp(64px, 20vmin, 240px) !important; /* súbelo si lo quieres aún más grande */
+  line-height: 0.9;
+  letter-spacing: 0.02em;
+  display: inline-block; /* evita cortes por line-height del h1 */
+}
   </style>
 </head>
 <body>
