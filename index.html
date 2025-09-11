@@ -61,7 +61,7 @@
 #headline{
 position: fixed; inset: 0;
 z-index: 3; display: grid; place-items: center;
-pointer-events: none; padding: 0 5vw; text-align: justify;
+pointer-events: none; padding: 0 5vw; text-align: center;
 }
 #headline .line{
 margin: 0; color: #fff; line-height: 1;
@@ -97,22 +97,6 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
   content: "";
   display: inline-block;
   width: 100%;             /* <-- truco para que JUSTIFY funcione en una sola línea */
-}
-
-/* Tamaños y estilo de cada línea */
-#headline .bebas{
-  font-family: "Bebas Neue", sans-serif !important;
-  line-height: 0.9;
-  letter-spacing: 0.03em;  /* un poco más de tracking = se siente más “ligera” */
-  color: rgba(255,255,255,.95);
-  font-size: clamp(72px, 16vmin, 420px);   /* MUY grande (ajusta si quieres) */
-}
-
-#headline .lato{
-  font-family: "Lato", sans-serif !important;
-  line-height: 1.05;
-  letter-spacing: 0.015em;
-  font-size: clamp(28px, 7vmin, 140px);    /* más pequeño y proporcional */
 }
 
 
