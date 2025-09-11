@@ -20,8 +20,8 @@
       --dy: .15vmin;          /* ajuste fino Y */
       --k: 1;                 /* escala dinámica (JS) */
 		/* Tamaños de titulares */
---bebasSize: clamp(86px, 50vmax, 420px);
---latoSize: clamp(24px, 10vmin, 120px);
+--bebasSize: clamp(80px, 16vmax, 420px);
+--latoSize: clamp(28px, 7vmin, 160px);
     }
 
     html, body{
@@ -79,7 +79,40 @@ font-size: var(--latoSize); line-height: 1.05; letter-spacing: .015em;
 }
 body.open #headline .line{ opacity: 1; transform: translateY(0); }
 
+/* Contenedor centrado y con ancho común para ambas líneas */
+#headline .line{
+  width: min(92vw, 1200px);
+  margin: 0 auto;
+  text-align: left;       /* el “justify” lo aplicamos por línea */
+}
 
+/* Cada línea: una sola línea, justificada y con truco ::after para justificar single-line */
+#headline .row{
+  display: block;
+  white-space: nowrap;     /* fuerza una sola línea */
+  text-align: justify;     /* estira espacios hasta los bordes del contenedor */
+  text-justify: inter-word;
+}
+#headline .row::after{
+  content: "";
+  display: inline-block;
+  width: 100%;             /* <-- truco para que JUSTIFY funcione en una sola línea */
+}
+
+/* Tamaños y estilo de cada línea */
+#headline .bebas{
+  font-family: "Bebas Neue", sans-serif !important;
+  line-height: 0.9;
+  letter-spacing: 0.03em;  /* un poco más de tracking = se siente más “ligera” */
+  color: rgba(255,255,255,.95);
+  font-size: clamp(72px, 16vmin, 420px);   /* MUY grande (ajusta si quieres) */
+}
+
+#headline .lato{
+  font-family: "Lato", sans-serif !important;
+  line-height: 1.05;
+  letter-spacing: 0.015em;
+  font-size: clamp(28px, 7vmin, 140px);    /* más pequeño y proporcional */
 }
 
 
