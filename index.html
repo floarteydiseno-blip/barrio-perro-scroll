@@ -20,8 +20,8 @@
       --dy: .15vmin;          /* ajuste fino Y */
       --k: 1;                 /* escala dinámica (JS) */
 		/* Tamaños de titulares */
---bebasSize: clamp(65px, 12vmax, 420px);
---latoSize: clamp(17px, 6vmin, 120px);
+--bebasSize: clamp(72px, 16vmax, 420px);
+--latoSize: clamp(15px, 7vmin, 140px);
     }
 
 /* Altura del documento controlada por JS (con fallback) */
@@ -85,7 +85,7 @@ font-size: var(--bebasSize); line-height: .9; letter-spacing: .02em; text-transf
 #headline .lato{
 font-family: "Lato", sans-serif; display: inline-block;
 font-size: var(--latoSize); line-height: 1.05; letter-spacing: .015em;
-word-spacing: 0.1em;
+word-spacing: -0.1em;
 }
 body.open #headline .line{ opacity: 1; transform: translateY(0); }
 
@@ -106,7 +106,7 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
       font-family: "Bebas Neue", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif !important;
 	  color: #fff;
       text-align: center;
-      font-size: clamp(48px, 20vmin, 200px);
+      font-size: clamp(70px, 20vmin, 200px);
       line-height: 1.18;
       opacity: 0;
       transform: translateY(42px);
@@ -154,7 +154,7 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
 	/* ====== MÓVILES MUY BAJOS DE ALTO (extra seguro) ====== */
 @media (max-height: 700px){
   :root{
-    --holeBase: 12.5vmin;
+    --holeBase: 7vmin;
   }
 }
       #headline{ padding: 0 6vw; }
