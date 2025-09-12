@@ -15,7 +15,7 @@
   <style>
     :root{
       --overlay: #000000;
-      --holeBase: 2.5vmin;      /* tamaño base del logo/hueco (desktop) CAMBIE 5 a 2 */
+      --holeBase: 16vmin;      /* tamaño base del logo/hueco (desktop) CAMBIE 5 a 2 */
       --dx: 0vmin;            /* ajuste fino X */
       --dy: .15vmin;          /* ajuste fino Y */
       --k: 1;                 /* escala dinámica (JS) */
@@ -24,21 +24,30 @@
 --latoSize: clamp(24px, 6vmin, 120px);
     }
 
-    html, body{
+/* Altura del documento controlada por JS (con fallback) */
+html, body{
+  margin: 0;
+  background: #000;
+  width: 100%;
+  min-height: 100dvh;
+  height: var(--docH, 360vh); /* fallback si JS no corre */
+  overflow-x: hidden;
+}	  
+   /* html, body{
       margin: 0;
       background: #000;
       overflow-x: hidden;
-      /* En móvil, vh varía con la barra del navegador; usa min-height NUEVO CAMBIO*/
-      min-height: 320vh;    /*Cambié de 540 a 320*/
+      /* En móvil, vh varía con la barra del navegador; usa min-height NUEVO CAMBIO
+      min-height: 320vh;    /*Cambié de 540 a 320
       height: auto;
-    }
+    }*/
 
     /* Video fijo al fondo */
     #video-bg{
       position: fixed;
       inset: 0;
       width: 100vw;
-      height: 100vh;
+      height: 100dvh;
       object-fit: cover;
       z-index: 1;
       background:#000;
@@ -49,7 +58,7 @@
       position: fixed;
       inset: 0;
       width: 100vw;
-      height: 100vh;
+      height: 100dvh;
       z-index: 2;
       pointer-events: none;
       display: block;
@@ -116,13 +125,37 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
       }
     }
 
-    /* ====== Ajustes específicos para móvil ====== */
-    @media (max-width: 100px){
+  /* ====== DESKTOP (≥1024px) ====== */
+   @media (min-width: 1024px){
+  :root{
+    /* El logo nace más pequeño para que entre completo */
+    --holeBase: 18vmin;              /* antes 2.5vmin */
+    --dx: 0vmin;
+    --dy: 0.15vmin;
+
+    /* Titulares grandes estilo portada */
+    --bebasSize: clamp(72px, 16vmax, 420px);
+    --latoSize:  clamp(24px, 7vmin, 140px);
+  }
+}
+	  /* ====== Ajustes específicos para móvil ====== */
+	  @media (max-width: 1023.98px){
       :root{
-        --holeBase: 1vmin;  	/* logo inicia más grande en móvil */
-		--dx: -1.5vmin;   		/* mueve un poco a la derecha */
-    	--dy: -1.5vmin;  		/* sube un poco */
-      }
+        --holeBase: 14vmin;  	/* logo inicia más grande en móvil */
+		--dx: 0vmin;   		/* mueve un poco a la derecha */
+    	--dy: 0vmin;  		/* sube un poco */
+
+		  /* Bebas muy grande pero contenida por el lado corto */
+    --bebasSize: clamp(56px, 14vmin, 340px);
+    --latoSize:  clamp(22px, 6vmin, 110px);
+		  }
+	  }
+	/* ====== MÓVILES MUY BAJOS DE ALTO (extra seguro) ====== */
+@media (max-height: 700px){
+  :root{
+    --holeBase: 12.5vmin;
+  }
+}
       #headline{ padding: 0 6vw; }
       #headline .line{
         font-size: clamp(48px, 16vmin, 200px);
@@ -132,10 +165,20 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
         font-size: 0.95em;
         line-height: 1.35;
       }
-    }
+	  
+    /* ====== XL DESKTOP (monitores grandes) ====== */
+@media (min-width: 1600px){
+  :root{
+    /* Logo nace un poco más grande (igual cabe completo) */
+    --holeBase: 20vmin;
 
-  </style>
-</head>
+    /* Titulares estilo portada tamaño XL */
+    --bebasSize: clamp(96px, 18vmax, 560px);
+    --latoSize:  clamp(32px, 8vmin, 220px);
+  }
+}
+	 </style>
+	</head>
 <body>
 
   <!-- Video de fondo -->
@@ -315,11 +358,36 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
 
   <script>
   (function(){
-    /* ===== Parámetros ===== */
+	  // Diales dependientes del viewport (Wix/mobile/desktop)
+const isMobile = matchMedia("(max-width:1024px)").matches || innerHeight < 720;
+
+let MIN   = 0.82;   // Desktop: arranca ~18% más chico
+let MAX   = 12.0;   // Sube a 14–16 si quieres que se salga más de pantalla
+const OPEN_EPS = 0.05; // margen para considerar “abierto”
+const overlay = document.getElementById('overlay');  // let SPEED = 0.009;  // Desktop: apertura cómoda
+
+if (isMobile){
+  MIN   = 0.74;     // Móvil: nace aún más chico para entrar completo
+  MAX   = 12.0;     // puedes mantener 12
+  SPEED = 0.012;    // Móvil/Wix: abre más con menos scroll útil
+}
+// Usa tus MIN / MAX / SPEED ya declarados arriba
+(function setDocHeight(){
+  function applyDocH(){
+    const yNeeded = (MAX - MIN) / SPEED;                  // px de scroll requeridos
+    const vhNeeded = 100 + (yNeeded / innerHeight) * 100; // pásalo a vh desde el viewport actual
+    const fudge = (top !== self || innerHeight < 720) ? 1.08 : 1.04; // Wix/iframes o pantallas bajas
+    document.documentElement.style.setProperty('--docH', Math.ceil(vhNeeded * fudge) + 'vh');
+  }
+  applyDocH();
+  addEventListener('resize', () => requestAnimationFrame(applyDocH));
+})();
+	  
+	  /* ===== Parámetros ===== 
     const MIN = .55;       // escala mínima del logo/hueco
     const MAX = 18;        // escala máxima
-    const OPEN_EPS = 0.05; // margen para considerar “abierto”
-    const overlay = document.getElementById('overlay');
+   */
+	  
 
     // SPEED dinámico según el scroll disponible (mejor en móvil)
     let SPEED = 0.008;     // fallback
