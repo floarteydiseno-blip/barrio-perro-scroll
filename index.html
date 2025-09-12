@@ -20,8 +20,8 @@
       --dy: .15vmin;          /* ajuste fino Y */
       --k: 1;                 /* escala dinámica (JS) */
 		/* Tamaños de titulares */
---bebasSize: clamp(55px, 15vmax, 420px);
---latoSize: clamp(19px, 5vmin, 120px);
+--bebasSize: clamp(55px, 12vmax, 420px);
+--latoSize: clamp(17px, 5vmin, 120px);
     }
 
 /* Altura del documento controlada por JS (con fallback) */
@@ -135,8 +135,8 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
     --dy: 0.15vmin;
 
     /* Titulares grandes estilo portada */
-    --bebasSize: clamp(55px, 15vmax, 420px);
-    --latoSize:  clamp(19px, 6vmin, 140px);
+    --bebasSize: clamp(55px, 12vmax, 420px);
+    --latoSize:  clamp(17px, 5vmin, 140px);
   }
 }
 	  /* ====== Ajustes específicos para móvil ====== */
@@ -367,7 +367,7 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
   let SPEED = 0.009;  // Desktop base (se re-ajusta abajo)
 
   if (isMobile){
-    MIN   = 0.50;     // Móvil: aún más chico para entrar completo
+    MIN   = 0.30;     // Móvil: aún más chico para entrar completo bajo de .50 a .30
     MAX   = 12.0;
     SPEED = 0.012;    // Móvil: abre con menos scroll útil
   }
