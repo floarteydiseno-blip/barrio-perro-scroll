@@ -192,7 +192,7 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
      xmlns="http://www.w3.org/2000/svg"
      xmlns:xlink="http://www.w3.org/1999/xlink"
      viewBox="0 0 100 100"
-     preserveAspectRatio="none"     <!--"xMidYMid slice"-->
+     preserveAspectRatio="xMidYMid slice"
      aria-hidden="true">
   <defs>
     <!-- Tu logo tal cual, con sus blancos y negros -->
@@ -315,7 +315,7 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
     style="
       width: var(--holeBase);
       height: var(--holeBase);
-      transform: translate(-50, -50) translate(var(--dx), var(--dy));  <!--quité %-->
+      transform: translate(-50%, -50%) translate(var(--dx), var(--dy));  
       overflow: visible;
     "
     preserveAspectRatio="xMidYMid meet"
@@ -323,7 +323,7 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
     <!-- CONTENEDOR 2: SOLO escala desde el centro -->
     <g style="
       transform: scale(var(--k));
-      transform-origin: 50 50;  <!--quité %-->
+      transform-origin: 50% 50%;
       transform-box: fill-box;
     ">
       <!-- Doble referencia por compatibilidad -->
