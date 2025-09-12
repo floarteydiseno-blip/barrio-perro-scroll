@@ -20,8 +20,8 @@
       --dy: .15vmin;          /* ajuste fino Y */
       --k: 1;                 /* escala dinámica (JS) */
 		/* Tamaños de titulares */
---bebasSize: clamp(54px, 12vmax, 420px);
---latoSize: clamp(24px, 6vmin, 120px);
+--bebasSize: clamp(50px, 12vmax, 420px);
+--latoSize: clamp(20px, 6vmin, 120px);
     }
 
 /* Altura del documento controlada por JS (con fallback) */
@@ -70,7 +70,7 @@ html, body{
 #headline{
 position: fixed; inset: 0;
 z-index: 3; display: grid; place-items: center;
-pointer-events: none; padding: 0 5vw; text-align: justify;
+pointer-events: none; padding: 0 5vw; text-align: center;
 }
 #headline .line{
 margin: 0; color: #fff; line-height: 1;
