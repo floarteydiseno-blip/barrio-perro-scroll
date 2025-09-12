@@ -310,14 +310,15 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
   <rect x="0" y="0" width="100" height="100" fill="#fff"/> 
 
     <svg
-    x="50" y="50"    
+    x="50%" y="50%"    
     viewBox="0 0 100 100"
     style="
       width: var(--holeBase);
       height: var(--holeBase);
-      transform: translate(-50%, -50%) translate(var(--dx), var(--dy));  
+      transform:
+        translate(calc(-50% + var(--dx)), calc(-50% + var(--dy)))
       overflow: visible;
-    "
+		"
     preserveAspectRatio="xMidYMid meet"
   >
     <!-- CONTENEDOR 2: SOLO escala desde el centro -->
@@ -345,7 +346,7 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
   <!-- Texto que aparece cuando el logo ya abrió -->
   <div id="headline" aria-hidden="true">
     <h1 class="line">
-      <span class="row bebas">Barrio Perro:</span>  	<!--   <br/> -->
+      <span class="row bebas">Barrio Perro:</span><br/>
       <span class="row lato">Bienestar natural para tu perro, conexión real contigo.</span>
     </h1>
   </div>
