@@ -304,7 +304,7 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
     </symbol>
 
     <!-- Máscara por luminancia: BLANCO = tapa, NEGRO = abre hueco -->
-    <mask id="revealMask" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" mask-type="luminance">
+    <mask id="revealMask" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" style="mask-type: luminance">
   <!-- Fondo blanco: deja todo opaco -->
   <rect x="0" y="0" width="100" height="100" fill="#fff"/>
 
@@ -355,85 +355,67 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
     </h2>
   </section>
   -->
+<script>
+(function(){
+  // ---- Diales por dispositivo (defínelos ANTES de usarlos) ----
+  const isMobile = matchMedia("(max-width:1024px)").matches || innerHeight < 720;
 
-  <script>
-  (function(){
-	  // Diales dependientes del viewport (Wix/mobile/desktop)
-const isMobile = matchMedia("(max-width:1024px)").matches || innerHeight < 720;
+  let MIN   = 0.82;  // desktop: arranca más chico
+  let MAX   = 12.0;  // sube si quieres que se salga más
+  let SPEED = 0.009; // desktop base (se recalcula abajo)
 
-let MIN   = 0.82;   // Desktop: arranca ~18% más chico
-let MAX   = 12.0;   // Sube a 14–16 si quieres que se salga más de pantalla
-const OPEN_EPS = 0.05; // margen para considerar “abierto”
-const overlay = document.getElementById('overlay');  // let SPEED = 0.009;  // Desktop: apertura cómoda
+  if (isMobile){
+    MIN   = 0.74;    // móvil: aún más chico para que entre completo
+    MAX   = 12.0;
+    SPEED = 0.012;   // móvil: abre con menos scroll útil
+  }
 
-if (isMobile){
-  MIN   = 0.74;     // Móvil: nace aún más chico para entrar completo
-  MAX   = 12.0;     // puedes mantener 12
-  SPEED = 0.012;    // Móvil/Wix: abre más con menos scroll útil
-}
-// Usa tus MIN / MAX / SPEED ya declarados arriba
-(function setDocHeight(){
+  const OPEN_EPS = 0.05;
+  const overlay  = document.getElementById('overlay');
+
+  // ---- Helpers ----
+  const clamp = (v,a,b)=> Math.max(a, Math.min(b, v));
+
+  // Ajusta SPEED al scroll disponible (más fino que el valor base)
+  function recomputeSpeed(){
+    const doc = document.documentElement;
+    const scrollRange = Math.max(1, doc.scrollHeight - innerHeight);
+    const target = Math.max(300, Math.floor(scrollRange * 0.8)); // abre ~al 80% del scroll
+    SPEED = (MAX - MIN) / target;
+  }
+
+  // Calcula altura necesaria para llegar a MAX (usa MIN/MAX/SPEED vigentes)
   function applyDocH(){
-    const yNeeded = (MAX - MIN) / SPEED;                  // px de scroll requeridos
-    const vhNeeded = 100 + (yNeeded / innerHeight) * 100; // pásalo a vh desde el viewport actual
+    const yNeeded = (MAX - MIN) / SPEED;                   // px de scroll requeridos
+    const vhNeeded = 100 + (yNeeded / innerHeight) * 100;  // pásalo a vh
     const fudge = (top !== self || innerHeight < 720) ? 1.08 : 1.04; // Wix/iframes o pantallas bajas
     document.documentElement.style.setProperty('--docH', Math.ceil(vhNeeded * fudge) + 'vh');
   }
+
+  function onScroll(){
+    const y = scrollY || document.documentElement.scrollTop || 0;
+    const k = clamp(MIN + y * SPEED, MIN, MAX);
+    document.documentElement.style.setProperty('--k', String(k));
+
+    // Fade del overlay + entrada del titular
+    const opened = (k >= MAX - OPEN_EPS);
+    overlay.style.opacity = opened ? '0' : '1';
+    document.body.classList.toggle('open', opened);
+  }
+
+  // ---- Init en orden correcto ----
+  recomputeSpeed();
   applyDocH();
-  addEventListener('resize', () => requestAnimationFrame(applyDocH));
+  onScroll();
+
+  // ---- Listeners ----
+  addEventListener('scroll', onScroll, { passive:true });
+  addEventListener('resize', () => { recomputeSpeed(); applyDocH(); onScroll(); });
+  addEventListener('orientationchange', () => { recomputeSpeed(); applyDocH(); onScroll(); });
+  addEventListener('load', () => { recomputeSpeed(); applyDocH(); onScroll(); });
 })();
-	  
-	  /* ===== Parámetros ===== 
-    const MIN = .55;       // escala mínima del logo/hueco
-    const MAX = 18;        // escala máxima
-   */
-	  
+</script>
 
-    // SPEED dinámico según el scroll disponible (mejor en móvil)
-    let SPEED = 0.008;     // fallback
-    function recomputeSpeed(){
-      const doc = document.documentElement;
-      const scrollRange = Math.max(1, doc.scrollHeight - window.innerHeight);
-      // Apuntar a “abrir” cerca del 80% del scroll disponible
-      const target = Math.max(300, Math.floor(scrollRange * 0.8));
-      SPEED = (MAX - MIN) / target;
-    }
-
-    function clamp(v,a,b){ return Math.max(a, Math.min(b, v)); }
-
-    function onScroll(){
-      const y = window.scrollY || document.documentElement.scrollTop || 0;
-      const k = clamp(MIN + y * SPEED, MIN, MAX);
-
-      // Escala del “agujero” (logo)
-      document.documentElement.style.setProperty('--k', String(k));
-
-      // Fade del overlay + entrada del titular
-      const opened = (k >= MAX - OPEN_EPS);
-      overlay.style.opacity = opened ? '0' : '1';
-
-      if (opened) {
-        // pequeño retardo para que termine el fade
-        if (!document.body.classList.contains('open')) {
-          setTimeout(() => document.body.classList.add('open'), 60);
-        }
-      } else {
-        document.body.classList.remove('open');
-      }
-    }
-
-    // Listeners
-    window.addEventListener('resize', () => { recomputeSpeed(); onScroll(); });
-    window.addEventListener('orientationchange', () => { recomputeSpeed(); onScroll(); });
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('load', () => { recomputeSpeed(); onScroll(); });
-
-    // Reveal “desde abajo” en la sección siguiente (si la usas)
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
-    }, { threshold: 0.15, rootMargin: '0px 0px -10%' });
-    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-  })();
-  </script>
+ 
 </body>
 </html>
