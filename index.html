@@ -323,42 +323,11 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
   <!-- Fondo blanco: deja todo opaco -->
   <rect x="0" y="0" width="100" height="100" fill="#fff"/> 
 
-    <svg
-    x="50%" y="50%"    
-    viewBox="0 0 100 100"
-    style="
-      width: var(--holeBase);
-      height: var(--holeBase);
-      transform: translate(-50%, -50%) translate(var(--dx), var(--dy));  
-      overflow: visible;
-		"
-    preserveAspectRatio="xMidYMid meet"
-  >
-    <!-- CONTENEDOR 2: SOLO escala desde el centro -->
-    <g style="
-      transform: scale(var(--k));
-      transform-origin: 50% 50%;
-      transform-box: fill-box;
-    ">
-      <!-- Doble referencia por compatibilidad -->
-      <use href="#logo-symbol" width="100%" height="100%"></use> 
-      <use xlink:href="#logo-symbol" width="100%" height="100%"></use>
-    </g>
-  </svg>
-</mask>
-
-	  <!-- MÁSCARA SOLO PARA MÓVIL: centrada por viewBox (más robusto en iOS) -->
-<mask id="revealMaskMobile"
-      maskUnits="userSpaceOnUse"
-      maskContentUnits="userSpaceOnUse"
-      style="mask-type: luminance">
-  <!-- fondo blanco: mantiene visible TODO el negro -->
-  <rect x="0" y="0" width="100" height="100" fill="#fff"/>
-  <!-- logo centrado en (50,50) del viewBox y escalado con tus variables -->
-  <image
-    href="logo-mask.svg?v=9"
-    xlink:href="logo-mask.svg?v=9"
+  <!-- LOGO centrado por viewBox (robusto en móvil) -->
+  <!-- OJO: x="50" y="50" en coords del viewBox (0–100), NO porcentajes -->
+  <svg
     x="50" y="50"
+    viewBox="0 0 500 500"           <!-- mismo viewBox de tu symbol -->
     preserveAspectRatio="xMidYMid meet"
     style="
       width:  var(--holeBase);
@@ -367,9 +336,37 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
         translate(calc(-50% + var(--dx)), calc(-50% + var(--dy)))
         scale(var(--k));
       transform-origin: 50% 50%;
-    " />
+      overflow: visible;
+    ">
+    <use href="#logo-symbol" width="100%" height="100%"></use>
+    <use xlink:href="#logo-symbol" width="100%" height="100%"></use>
+  </svg>
+		
+   <!-- <svg
+    x="50%" y="50%"    
+    viewBox="0 0 500 500"
+    style="
+      width: var(--holeBase);
+      height: var(--holeBase);
+      transform: translate(-50%, -50%) translate(var(--dx), var(--dy));  
+      overflow: visible;
+		"
+    preserveAspectRatio="xMidYMid meet"
+  >
+    <!-- CONTENEDOR 2: SOLO escala desde el centro 
+    <g style="
+      transform: scale(var(--k));
+      transform-origin: 50% 50%;
+      transform-box: fill-box;
+    ">
+      <!-- Doble referencia por compatibilidad
+      <use href="#logo-symbol" width="100%" height="100%"></use> 
+      <use xlink:href="#logo-symbol" width="100%" height="100%"></use>
+    </g>
+  </svg> -->
+		
 </mask>
-
+	  
   </defs>
 
   <!-- Rectángulo negro que cubre todo; el logo NEGRO en la máscara abre el hueco -->
