@@ -323,11 +323,11 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
   <!-- Fondo blanco: deja todo opaco -->
   <rect x="0" y="0" width="100" height="100" fill="#fff"/> 
 
-  <!-- LOGO centrado por viewBox (robusto en móvil) -->
-  <!-- OJO: x="50" y="50" en coords del viewBox (0–100), NO porcentajes -->
+  <!-- LOGO centrado por viewBox (robusto en móvil) 
+  <!-- OJO: x="50" y="50" en coords del viewBox (0–100), NO porcentajes
   <svg
     x="50" y="50"
-    viewBox="0 0 500 500"           <!-- mismo viewBox de tu symbol -->
+    viewBox="0 0 500 500"           <!-- mismo viewBox de tu symbol
     preserveAspectRatio="xMidYMid meet"
     style="
       width:  var(--holeBase);
@@ -340,9 +340,9 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
     ">
     <use href="#logo-symbol" width="100%" height="100%"></use>
     <use xlink:href="#logo-symbol" width="100%" height="100%"></use>
-  </svg>
+  </svg> -->
 		
-   <!-- <svg
+   <svg
     x="50%" y="50%"    
     viewBox="0 0 500 500"
     style="
@@ -353,17 +353,17 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
 		"
     preserveAspectRatio="xMidYMid meet"
   >
-    <!-- CONTENEDOR 2: SOLO escala desde el centro 
+    <!-- CONTENEDOR 2: SOLO escala desde el centro -->
     <g style="
       transform: scale(var(--k));
       transform-origin: 50% 50%;
       transform-box: fill-box;
     ">
-      <!-- Doble referencia por compatibilidad
+      <!-- Doble referencia por compatibilidad -->
       <use href="#logo-symbol" width="100%" height="100%"></use> 
       <use xlink:href="#logo-symbol" width="100%" height="100%"></use>
     </g>
-  </svg> -->
+  </svg>
 		
 </mask>
 	  
@@ -395,44 +395,43 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
   // --- Diales por dispositivo ---
   const isMobile = matchMedia("(max-width:1024px)").matches || innerHeight < 720;
 
-  let MIN   = 0.58;   // Desktop: arranca más chico
-  let MAX   = 12.0;   // Sube si quieres que se salga más
-  let SPEED = 0.009;  // Desktop base (se re-ajusta abajo)
+  let MIN   = 0.82;   // desktop: nace un poco más chico (cabe completo)
+  let MAX   = 12.0;   // súbelo si quieres que se salga más
+  let SPEED = 0.009;  // base desktop (se afina abajo)
 
   if (isMobile){
-    MIN   = 0.30;     // Móvil: aún más chico para entrar completo bajo de .50 a .30
+    MIN   = 0.74;     // móvil: aún más chico
     MAX   = 12.0;
-    SPEED = 0.012;    // Móvil: abre con menos scroll útil
+    SPEED = 0.012;    // móvil: abre con menos scroll útil
   }
 
   const OPEN_EPS = 0.05;
   const root     = document.documentElement;
   const overlay  = document.getElementById('overlay');
 
-  // ---  AQUI: Ajuste automático del tamaño inicial del hueco  ---
-  // Queremos que el hueco visible **al cargar** mida FIT vmin aprox.
-  // Como tamaño_visible = --holeBase × MIN  ⇒  --holeBase = FIT / MIN
-  let FIT = isMobile ? 8 : 10; // visible inicial en vmin (ajusta a gusto)
+  // Ajuste automático: queremos que el hueco visible AL CARGAR tenga este tamaño (en vmin)
+  const FIT = isMobile ? 24 : 30;
   function fitHoleBase(){
+    // visible = --holeBase * MIN  => --holeBase = FIT / MIN
     root.style.setProperty('--holeBase', (FIT / MIN).toFixed(3) + 'vmin');
   }
 
-  // --- Helpers ---
+  // Helpers
   const clamp = (v,a,b)=> Math.max(a, Math.min(b, v));
 
-  // Ajusta SPEED al scroll disponible (más fino que el valor base)
+  // Ajusta SPEED al scroll real disponible (~abre al 80% del recorrido)
   function recomputeSpeed(){
     const doc = document.documentElement;
     const scrollRange = Math.max(1, doc.scrollHeight - innerHeight);
-    const target = Math.max(300, Math.floor(scrollRange * 0.8)); // abre ~al 80% del scroll
+    const target = Math.max(300, Math.floor(scrollRange * 0.8));
     SPEED = (MAX - MIN) / target;
   }
 
-  // Calcula la altura necesaria para llegar a MAX con el scroll disponible
+  // Calcula altura del documento para llegar a MAX
   function applyDocH(){
-    const yNeeded = (MAX - MIN) / SPEED;                   // px de scroll requeridos
-    const vhNeeded = 100 + (yNeeded / innerHeight) * 100;  // pásalo a vh
-    const fudge = (top !== self || innerHeight < 720) ? 1.08 : 1.04; // Wix/iframe
+    const yNeeded = (MAX - MIN) / SPEED;                  // píxeles
+    const vhNeeded = 100 + (yNeeded / innerHeight) * 100; // vh
+    const fudge = (top !== self || innerHeight < 720) ? 1.08 : 1.04; // Wix/iframes
     root.style.setProperty('--docH', Math.ceil(vhNeeded * fudge) + 'vh');
   }
 
@@ -441,25 +440,28 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
     const k = clamp(MIN + y * SPEED, MIN, MAX);
     root.style.setProperty('--k', String(k));
 
-    // Fade del overlay + entrada del titular
+    // Fade del overlay y entrada del titular (si usas #headline)
     const opened = (k >= MAX - OPEN_EPS);
-    overlay.style.opacity = opened ? '0' : '1';
+    if (overlay) overlay.style.opacity = opened ? '0' : '1';
     document.body.classList.toggle('open', opened);
   }
 
-  // --- Init en orden correcto ---
-  fitHoleBase();      // 1) ajusta --holeBase según MIN (para que quepa)
-  recomputeSpeed();   // 2) ajusta SPEED con el scroll real
-  applyDocH();        // 3) da altura suficiente al documento
-  onScroll();         // 4) pinta estado inicial
+  // ---- Init en orden correcto (2 pasadas para estabilidad) ----
+  fitHoleBase();      // 1) ajusta tamaño inicial del hueco para que quepa
+  recomputeSpeed();   // 2) estima velocidad con scroll actual
+  applyDocH();        // 3) da altura suficiente
+  recomputeSpeed();   // 4) re-calcula velocidad con la nueva altura
+  applyDocH();        // 5) y ajusta altura fina
+  onScroll();         // 6) pinta estado inicial
 
-  // --- Listeners ---
+  // ---- Listeners ----
   addEventListener('scroll', onScroll, { passive:true });
   addEventListener('resize', ()=>{ fitHoleBase(); recomputeSpeed(); applyDocH(); onScroll(); });
   addEventListener('orientationchange', ()=>{ fitHoleBase(); recomputeSpeed(); applyDocH(); onScroll(); });
   addEventListener('load', ()=>{ fitHoleBase(); recomputeSpeed(); applyDocH(); onScroll(); });
 })();
 </script>
+
 
  
 </body>
