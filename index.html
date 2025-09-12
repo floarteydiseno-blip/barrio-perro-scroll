@@ -143,8 +143,8 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
 	  @media (max-width: 1024px){
       :root{
         --holeBase: 14vmin;  	/* logo inicia más grande en móvil */
-		--dx: 0vmin;   		/* mueve un poco a la derecha */
-    	--dy: 0vmin;  		/* sube un poco */
+		--dx: -10vmin;   		/* mueve un poco a la derecha */
+    	--dy: -10vmin;  		/* sube un poco */
 
 		  /* Bebas muy grande pero contenida por el lado corto */
     --bebasSize: clamp(56px, 14vmin, 340px);
@@ -374,15 +374,7 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
 
   <!-- Rectángulo negro que cubre todo; el logo NEGRO en la máscara abre el hueco -->
   <rect x="0" y="0" width="100%" height="100%" style="fill:var(--overlay)" mask="url(#revealMask)"/>
-
-	<!-- Desktop (tu máscara original) -->
-<rect id="rectDesktop" x="0" y="0" width="100" height="100"
-      style="fill: var(--overlay)" mask="url(#revealMask)"/>
-
-<!-- Móvil (máscara centrada por viewBox) -->
-<rect id="rectMobile"  x="0" y="0" width="100" height="100"
-      style="fill: var(--overlay)" mask="url(#revealMaskMobile)"/>
-
+	
 </svg>
 
   <!-- Texto que aparece cuando el logo ya abrió -->
