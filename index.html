@@ -140,9 +140,9 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
   }
 }
 	  /* ====== Ajustes específicos para móvil ====== */
-	  @media (max-width: 1023.98px){
+	  @media (max-width: 1024px){
       :root{
-        --holeBase: 7vmin;  	/* logo inicia más grande en móvil BAJE DE 14 A 7 */
+        --holeBase: 14vmin;  	/* logo inicia más grande en móvil */
 		--dx: 0vmin;   		/* mueve un poco a la derecha */
     	--dy: 0vmin;  		/* sube un poco */
 
@@ -192,7 +192,7 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
      xmlns="http://www.w3.org/2000/svg"
      xmlns:xlink="http://www.w3.org/1999/xlink"
      viewBox="0 0 100 100"
-     preserveAspectRatio="xMidYMid slice"
+     preserveAspectRatio="none"     <!--"xMidYMid slice"-->
      aria-hidden="true">
   <defs>
     <!-- Tu logo tal cual, con sus blancos y negros -->
@@ -304,34 +304,33 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
 
     </symbol>
 
-    <!-- Máscara por luminancia: BLANCO = tapa, NEGRO = abre hueco -->
+    <!-- Máscara por luminancia: BLANCO = tapa, NEGRO = abre hueco 
     <mask id="revealMask" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" style="mask-type: luminance">
-  <!-- Fondo blanco: deja todo opaco -->
+  <!-- Fondo blanco: deja todo opaco 
+  <rect x="0" y="0" width="100" height="100" fill="#fff"/>  -->
+
+  <mask id="revealMask"
+      maskUnits="userSpaceOnUse"
+      maskContentUnits="userSpaceOnUse"
+      style="mask-type: luminance">
+  <!-- fondo blanco: mantiene visible el rect negro -->
   <rect x="0" y="0" width="100" height="100" fill="#fff"/>
 
-  <!-- CONTENEDOR 1: centra en viewport, NO escala -->
-  <svg
-    x="50%" y="50%"
-    viewBox="0 0 100 100"
-    style="
-      width: var(--holeBase);
-      height: var(--holeBase);
-      transform: translate(-50%, -50%) translate(var(--dx), var(--dy));
-      overflow: visible;
-    "
+  <!-- LOGO: centrado en (50,50) del viewBox y escalado por CSS vars -->
+  <image
+    href="logo-mask.svg?v=7"
+    xlink:href="logo-mask.svg?v=7"
+    x="50" y="50"                   <!-- coordenadas del viewBox (0–100) -->
     preserveAspectRatio="xMidYMid meet"
-  >
-    <!-- CONTENEDOR 2: SOLO escala desde el centro -->
-    <g style="
-      transform: scale(var(--k));
+    style="
+      width:  var(--holeBase);
+      height: var(--holeBase);
+      transform:
+        translate(calc(-50% + var(--dx)), calc(-50% + var(--dy)))
+        scale(var(--k));
       transform-origin: 50% 50%;
-      transform-box: fill-box;
-    ">
-      <!-- Doble referencia por compatibilidad -->
-      <use href="#logo-symbol" width="100%" height="100%"></use>
-      <use xlink:href="#logo-symbol" width="100%" height="100%"></use>
-    </g>
-  </svg>
+    " />
+
 </mask>
 
   </defs>
@@ -360,7 +359,7 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
 <script>
 (function(){
   // --- Diales por dispositivo ---
-  const isMobile = matchMedia("(max-width:900px)").matches || innerHeight < 650;
+  const isMobile = matchMedia("(max-width:1024px)").matches || innerHeight < 720;
 
   let MIN   = 0.58;   // Desktop: arranca más chico
   let MAX   = 12.0;   // Sube si quieres que se salga más
