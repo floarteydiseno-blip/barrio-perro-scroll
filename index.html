@@ -310,8 +310,8 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
   <rect x="0" y="0" width="100" height="100" fill="#fff"/> 
 
     <svg
-    x="50%" y="50%"    
-    viewBox="0 0 100 100"
+    x="50" y="50"    
+    viewBox="0 0 500 500"
     style="
       width: var(--holeBase);
       height: var(--holeBase);
@@ -328,8 +328,8 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
       transform-box: fill-box;
     ">
       <!-- Doble referencia por compatibilidad -->
-      <use href="#logo-symbol" width="100" height="100"></use> <!--quité %-->
-      <use xlink:href="#logo-symbol" width="100" height="100"></use>  <!--quité %-->
+      <use href="#logo-symbol" width="100%" height="100%"></use> <!--quité %-->
+      <use xlink:href="#logo-symbol" width="100%" height="100%"></use>  <!--quité %-->
     </g>
   </svg>
 
@@ -339,7 +339,7 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
   </defs>
 
   <!-- Rectángulo negro que cubre todo; el logo NEGRO en la máscara abre el hueco -->
-  <rect x="0" y="0" width="100" height="100" style="fill:var(--overlay)" mask="url(#revealMask)"/>
+  <rect x="0" y="0" width="100%" height="100%" style="fill:var(--overlay)" mask="url(#revealMask)"/>
 </svg>
 
 
