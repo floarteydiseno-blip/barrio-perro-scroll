@@ -15,7 +15,7 @@
   <style>
     :root{
       --overlay: #000000;
-      --holeBase: 16vmin;      /* tamaño base del logo/hueco (desktop) CAMBIE 5 a 2 */
+      --holeBase: 14vmin;      /* tamaño base del logo/hueco (desktop) CAMBIE 5 a 2 */
       --dx: 0vmin;            /* ajuste fino X */
       --dy: .15vmin;          /* ajuste fino Y */
       --k: 1;                 /* escala dinámica (JS) */
@@ -360,7 +360,7 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
   // ---- Diales por dispositivo (defínelos ANTES de usarlos) ----
   const isMobile = matchMedia("(max-width:1024px)").matches || innerHeight < 720;
 
-  let MIN   = 0.82;  // desktop: arranca más chico
+  let MIN   = 0.78;  // desktop: arranca más chico
   let MAX   = 12.0;  // sube si quieres que se salga más
   let SPEED = 0.009; // desktop base (se recalcula abajo)
 
