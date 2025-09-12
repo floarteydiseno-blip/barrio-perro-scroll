@@ -361,12 +361,12 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
   // --- Diales por dispositivo ---
   const isMobile = matchMedia("(max-width:1024px)").matches || innerHeight < 720;
 
-  let MIN   = 0.78;   // Desktop: arranca más chico
+  let MIN   = 0.68;   // Desktop: arranca más chico
   let MAX   = 12.0;   // Sube si quieres que se salga más
   let SPEED = 0.009;  // Desktop base (se re-ajusta abajo)
 
   if (isMobile){
-    MIN   = 0.70;     // Móvil: aún más chico para entrar completo
+    MIN   = 0.60;     // Móvil: aún más chico para entrar completo
     MAX   = 12.0;
     SPEED = 0.012;    // Móvil: abre con menos scroll útil
   }
@@ -378,7 +378,7 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
   // ---  AQUI: Ajuste automático del tamaño inicial del hueco  ---
   // Queremos que el hueco visible **al cargar** mida FIT vmin aprox.
   // Como tamaño_visible = --holeBase × MIN  ⇒  --holeBase = FIT / MIN
-  let FIT = isMobile ? 22 : 28; // visible inicial en vmin (ajusta a gusto)
+  let FIT = isMobile ? 20 : 10; // visible inicial en vmin (ajusta a gusto)
   function fitHoleBase(){
     root.style.setProperty('--holeBase', (FIT / MIN).toFixed(3) + 'vmin');
   }
