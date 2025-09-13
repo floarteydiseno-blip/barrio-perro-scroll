@@ -396,7 +396,7 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
   // --- Diales por dispositivo ---
   const isMobile = matchMedia("(max-width:1024px)").matches || innerHeight < 720;
 
-  let MIN   = 0.58;   // desktop: nace un poco más chico (cabe completo)
+  let MIN   = 0.60;   // desktop: nace un poco más chico (cabe completo)
   let MAX   = 12.0;   // súbelo si quieres que se salga más
   let SPEED = 0.009;  // base desktop (se afina abajo)
 
@@ -411,7 +411,7 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
   const overlay  = document.getElementById('overlay');
 
   // Ajuste automático: queremos que el hueco visible AL CARGAR tenga este tamaño (en vmin)
-  const FIT = isMobile ? 8 : 10;
+  const FIT = isMobile ? 10 : 12;
   function fitHoleBase(){
     // visible = --holeBase * MIN  => --holeBase = FIT / MIN
     root.style.setProperty('--holeBase', (FIT / MIN).toFixed(3) + 'vmin');
