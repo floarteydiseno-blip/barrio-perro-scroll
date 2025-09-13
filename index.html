@@ -85,7 +85,7 @@ font-size: var(--bebasSize); line-height: .84; letter-spacing: .02em; text-trans
 #headline .lato{
 font-family: "Lato", sans-serif; display: inline-block;
 font-size: var(--latoSize); line-height: .96; letter-spacing: .015em;
-margin-top: -0.18em; /* acerca ambas líneas; ajusta entre -0.10em y -0.30em */	
+margin-top: -0.14em; /* acerca ambas líneas; ajusta entre -0.10em y -0.30em */	
 /*word-spacing: 0.1em;*/
 }
 body.open #headline .line{ opacity: 1; transform: translateY(0); }
@@ -131,7 +131,7 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
    @media (min-width: 1024px){
   :root{
     /* El logo nace más pequeño para que entre completo */
-    --holeBase: 10vmin;              /* antes 2.5vmin LO CAMBIE DE 18 A 10*/
+    --holeBase: 14vmin;              /* antes 2.5vmin LO CAMBIE DE 18 A 10*/
     --dx: 0vmin;
     --dy: 0.15vmin;
 
@@ -188,8 +188,8 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
   #rectMobile  { display:block; }
   :root{
     /* si hiciera falta, pequeño ajuste solo móvil */
-    --dx: 0vmin;
-    --dy: 0vmin;
+    --dx: -10vmin;
+    --dy: -10vmin;
   }
 }
 
@@ -211,7 +211,7 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
      aria-hidden="true">
   <defs>
     <!-- Tu logo tal cual, con sus blancos y negros -->
-    <symbol id="logo-symbol" viewBox="0 0 500 500">
+    <symbol id="logo-symbol" viewBox="0 0 100 100">
        <path fill="#FFFFFF" d="M9.36,4.5c161.72,0,323.43,0,485.14,0c0,162,0,324,0,486c-162,0-324,0-486,0c0-161.14,0-322.28,0-483.43
 	C8.43,5.85,8.36,4.64,9.36,4.5z M341.07,22.5c-20.7,24.92-16.16,71.75-38.57,98.57c-17.89,21.41-47.92,33.08-77.14,41.14
 	c-30.87,8.52-65.7,12.72-105.43,12.86c-13.53-13.99-26.03-37.45-28.29-64.29c-1.51-18.03,3.01-38.25,5.14-52.29
@@ -345,7 +345,7 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
 		
    <svg
     x="50%" y="50%"    
-    viewBox="0 0 500 500"
+    viewBox="0 0 100 100"
     style="
       width: var(--holeBase);
       height: var(--holeBase);
@@ -358,9 +358,9 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
     <g style="
       transform: scale(var(--k));
       transform-origin: 50% 50%;
-      transform-box: fill-box;
+      
     ">
-      <!-- Doble referencia por compatibilidad -->
+      <!-- transform-box: fill-box; Doble referencia por compatibilidad -->
       <use href="#logo-symbol" width="100%" height="100%"></use> 
       <use xlink:href="#logo-symbol" width="100%" height="100%"></use>
     </g>
@@ -396,7 +396,7 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
   // --- Diales por dispositivo ---
   const isMobile = matchMedia("(max-width:1024px)").matches || innerHeight < 720;
 
-  let MIN   = 0.66;   // desktop: nace un poco más chico (cabe completo)
+  let MIN   = 0.64;   // desktop: nace un poco más chico (cabe completo)
   let MAX   = 12.0;   // súbelo si quieres que se salga más
   let SPEED = 0.009;  // base desktop (se afina abajo)
 
@@ -411,7 +411,7 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
   const overlay  = document.getElementById('overlay');
 
   // Ajuste automático: queremos que el hueco visible AL CARGAR tenga este tamaño (en vmin)
-  const FIT = isMobile ? 12 : 14;
+  const FIT = isMobile ? 11 : 13;
   function fitHoleBase(){
     // visible = --holeBase * MIN  => --holeBase = FIT / MIN
     root.style.setProperty('--holeBase', (FIT / MIN).toFixed(3) + 'vmin');
