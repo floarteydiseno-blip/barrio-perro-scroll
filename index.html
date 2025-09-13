@@ -80,12 +80,12 @@ transition: transform .7s cubic-bezier(.2,.7,0,.99), opacity .6s ease;
 #headline .bebas{
 font-family: "Oswald", sans-serif !important;
 font-weight: 300 !important;
-font-size: var(--bebasSize); line-height: .82; letter-spacing: .02em; text-transform: uppercase;
+font-size: var(--bebasSize); line-height: .80; letter-spacing: .02em; text-transform: uppercase;
 }
 #headline .lato{
 font-family: "Lato", sans-serif; display: inline-block;
-font-size: var(--latoSize); line-height: .94; letter-spacing: .015em;
-margin-top: -0.20em; /* acerca ambas líneas; ajusta entre -0.10em y -0.30em */	
+font-size: var(--latoSize); line-height: .90; letter-spacing: .015em;
+margin-top: -0.30em; /* acerca ambas líneas; ajusta entre -0.10em y -0.30em */	
 /*word-spacing: 0.1em;*/
 }
 body.open #headline .line{ opacity: 1; transform: translateY(0); }
@@ -144,8 +144,8 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
 	  @media (max-width: 1024px){
       :root{
         --holeBase: 16vmin;  	/* logo inicia más grande en móvil */
-		--dx: -20vmin;   		/* mueve un poco a la derecha */
-    	--dy: -20vmin;  		/* sube un poco */
+		--dx: 20vmin;   		/* mueve un poco a la derecha */
+    	--dy: 20vmin;  		/* sube un poco */
 
 		  /* Bebas muy grande pero contenida por el lado corto */
     --bebasSize: clamp(56px, 14vmin, 340px);
@@ -396,7 +396,7 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
   // --- Diales por dispositivo ---
   const isMobile = matchMedia("(max-width:1024px)").matches || innerHeight < 720;
 
-  let MIN   = 0.64;   // desktop: nace un poco más chico (cabe completo)
+  let MIN   = 0.62;   // desktop: nace un poco más chico (cabe completo)
   let MAX   = 12.0;   // súbelo si quieres que se salga más
   let SPEED = 0.009;  // base desktop (se afina abajo)
 
@@ -411,7 +411,7 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
   const overlay  = document.getElementById('overlay');
 
   // Ajuste automático: queremos que el hueco visible AL CARGAR tenga este tamaño (en vmin)
-  const FIT = isMobile ? 11 : 13;
+  const FIT = isMobile ? 10 : 12;
   function fitHoleBase(){
     // visible = --holeBase * MIN  => --holeBase = FIT / MIN
     root.style.setProperty('--holeBase', (FIT / MIN).toFixed(3) + 'vmin');
