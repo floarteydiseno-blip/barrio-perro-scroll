@@ -188,8 +188,8 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
   #rectMobile  { display:block; }
   :root{
     /* si hiciera falta, pequeño ajuste solo móvil */
-    --dx: -20vmin;
-    --dy: -20vmin;
+    --dx: 0vmin;
+    --dy: 0vmin;
   }
 }
 
@@ -325,7 +325,7 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
   <rect x="0" y="0" width="100" height="100" fill="#fff"/> 
 
   <!-- LOGO centrado por viewBox (robusto en móvil) 
-  <!-- OJO: x="50" y="50" en coords del viewBox (0–100), NO porcentajes
+  <!-- OJO: x="50" y="50" en coords del viewBox (0–100), NO porcentajes -->
   <svg
     x="50" y="50"
     viewBox="0 0 500 500"           <!-- mismo viewBox de tu symbol
@@ -338,12 +338,13 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
         scale(var(--k));
       transform-origin: 50% 50%;
       overflow: visible;
+	  transform-box: fill-box
     ">
     <use href="#logo-symbol" width="100%" height="100%"></use>
     <use xlink:href="#logo-symbol" width="100%" height="100%"></use>
-  </svg> -->
+  </svg> 
 		
-   <svg
+   <!-- <svg
     x="50" y="50"    
     viewBox="0 0 100 100"
     style="
@@ -354,17 +355,17 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
 		"
     preserveAspectRatio="xMidYMid meet"
   >
-    <!-- translate(-50%, -50%) translate(var(--dx), var(--dy)) CONTENEDOR 2: SOLO escala desde el centro -->
+    <!-- translate(-50%, -50%) translate(var(--dx), var(--dy)) CONTENEDOR 2: SOLO escala desde el centro 
     <g style="
       transform: scale(var(--k));
       transform-origin: 50% 50%;
       overflow: visible;
     ">
-      <!-- transform-box: fill-box; Doble referencia por compatibilidad -->
+      <!-- transform-box: fill-box; Doble referencia por compatibilidad 
       <use href="#logo-symbol" width="100%" height="100%"></use> 
       <use xlink:href="#logo-symbol" width="100%" height="100%"></use>
     </g>
-  </svg>
+  </svg> -->
 		
 </mask>
 	  
