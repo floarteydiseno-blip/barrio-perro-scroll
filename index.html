@@ -26,11 +26,11 @@
 
 /* Altura del documento controlada por JS (con fallback) */
 html, body{
-  margin: auto;
+  margin: 0 auto;
   background: #000;
-  width: 100%;
+  max width: 100%;
   min-height: 100dvh;
-  height: var(--docH, 480vh);  /*fallback si JS no corre */
+  height: auto /*var(--docH, 480vh);  /*fallback si JS no corre */
   overflow-x: hidden;
 }	  
    /* html, body{
@@ -73,7 +73,7 @@ z-index: 3; display: grid; place-items: center;
 pointer-events: none; padding: 0 5vw; text-align: justify;
 }
 #headline .line{
-margin: auto; color: #fff; line-height: 1;
+margin: 0; color: #fff; line-height: 1;
 opacity: 0; transform: translateY(12vh);
 transition: transform .7s cubic-bezier(.2,.7,0,.99), opacity .6s ease;
 }
