@@ -353,7 +353,7 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
   const overlay  = document.getElementById('overlay');
 
   // Tamaño visible inicial deseado del hueco (en vmin)
-  const FIT = isMobile ? 1 : 10;        // si al cargar lo ves grande, baja 1–2 puntos BAJE de 8 a 1 en mobile
+  const FIT = isMobile ? 8 : 10;        // si al cargar lo ves grande, baja 1–2 puntos BAJE de 8 a 1 en mobile
 
   function fitHoleBase(){
     //visible_inicial = --holeBase * MIN  ⇒  --holeBase = FIT / MIN
@@ -373,8 +373,8 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
   // 💡 Calcula la altura necesaria para llegar desde MIN hasta MAX
   function applyDocH(){
     const yNeeded = (MAX - MIN) / SPEED;                   // píxeles de scroll requeridos
-    const vhNeeded = 100 + (yNeeded / innerHeight) * 100;  // pásalo a vh
-    const fudge = (top !== self || innerHeight < 720) ? 1.08 : 1.04; // Wix/iframe/iOS
+    const vhNeeded = 100vh + (yNeeded / innerHeight) * 100vh;  // pásalo a vh
+    const fudge = (top !== self || innerHeight < 760) ? 1 : 1 ; // Wix/iframe/iOS 1.08 : 1.04
     root.style.setProperty('--docH', Math.ceil(vhNeeded * fudge) + 'vh');
   }
 
