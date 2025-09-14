@@ -328,14 +328,15 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
     style="
       width:  var(--holeBase);
       height: var(--holeBase);
-      transform:
-        translate(-50%, -50%) translate(var(--dx), var(--dy));
-        scale(var(--k));              /* scale al final */
-      transform-origin: 50% 50%;      /* centro real */
+      transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy)));
       overflow: visible;
     ">
-    <use href="#logo-symbol" width="100%" height="100%"></use>
-    <use xlink:href="#logo-symbol" width="100%" height="100%"></use>
+
+    <!-- CONTENEDOR 2: SOLO escala desde el centro (no traslada) -->
+    <g style="transform: scale(var(--k)); transform-origin: 50% 50%;">
+      <use href="#logo-symbol" width="100%" height="100%"></use>
+      <use xlink:href="#logo-symbol" width="100%" height="100%"></use>
+    </g>
   </svg>
 </mask>
   </defs>
@@ -355,7 +356,7 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
 (function(){
   const isMobile = matchMedia("(max-width:1024px)").matches || innerHeight < 720;
 
-  let MIN   = isMobile ? 0.40 : 0.50;   // nace pequeño
+  let MIN   = isMobile ? 0.60 : 0.68;   // nace pequeño
   let MAX   = 12.0;
   let SPEED = isMobile ? 0.012 : 0.009; // se recalibra con el scroll real
 
@@ -366,7 +367,7 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
   // tamaño visible inicial del hueco (en vmin)
   const FIT = isMobile ? 8 : 10;
   function fitHoleBase(){
-    root.style.setProperty('--holeBase', (FIT / MIN).toFixed(3) + 'vmin');
+    root.style.setProperty('--holeBase', hb);
   }
 
   const clamp = (v,a,b)=> Math.max(a, Math.min(b, v));
@@ -397,6 +398,7 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
   addEventListener('scroll', onScroll, { passive:true });
   addEventListener('resize', ()=>{ fitHoleBase(); recomputeSpeed(); onScroll(); });
   addEventListener('orientationchange', ()=>{ fitHoleBase(); recomputeSpeed(); onScroll(); });
+  addEventListener('load', ()=>{ fitHoleBase(); recomputeSpeed(); applyDocH(); onScroll(); });
 
   // debug opcional
   console.log('[BarrioPerro] init OK', {isMobile, MIN, MAX, SPEED, FIT});
