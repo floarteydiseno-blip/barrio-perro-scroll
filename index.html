@@ -371,6 +371,13 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
   }
 
   const clamp = (v,a,b)=> Math.max(a, Math.min(b, v));
+ 
+	function applyDocH(){
+    const yNeeded = (MAX - MIN) / SPEED;                   // px de scroll requeridos
+    const vhNeeded = 100 + (yNeeded / innerHeight) * 100;  // pásalo a vh
+    const fudge = (top !== self || innerHeight < 720) ? 1.08 : 1.04; // Wix/iframe
+    root.style.setProperty('--docH', Math.ceil(vhNeeded * fudge) + 'vh');
+  }
 
   // velocidad basada en el scroll disponible (~80% del recorrido)
   function recomputeSpeed(){
