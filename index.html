@@ -13,11 +13,11 @@
 
 
   <style>
-    :root{FIT
+    :root{
       --overlay: #000000;
-      --holeBase: 20vmin;      /* tamaño base del logo/hueco (desktop) CAMBIE 5 a 2 */
+      --holeBase: 12vmin;      /* tamaño base del logo/hueco (desktop) CAMBIE 5 a 2 */
       --dx: 0vmin;            /* ajuste fino X */
-      --dy: .15vmin;          /* ajuste fino Y */
+      --dy: 0vmin;          /* ajuste fino Y LO TENIA EN .15*/
       --k: 1;                 /* escala dinámica (JS) */
 		/* Tamaños de titulares */
 --bebasSize: clamp(55px, 12vmax, 420px);
@@ -319,64 +319,32 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
 
     </symbol>
 
-    <!-- Máscara por luminancia: BLANCO = tapa, NEGRO = abre hueco -->
-    <mask id="revealMask" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" style="mask-type: luminance">
-  <!-- Fondo blanco: deja todo opaco -->
-  <rect x="0" y="0" width="100" height="100" fill="#fff"/> 
-
-  <!-- LOGO centrado por viewBox (robusto en móvil) 
-  <!-- OJO: x="50" y="50" en coords del viewBox (0–100), NO porcentajes -->
+<mask id="revealMask" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" style="mask-type: luminance">
+  <rect x="0" y="0" width="100" height="100" fill="#fff"/>
   <svg
     x="50" y="50"
-    viewBox="0 0 500 500"           <!-- mismo viewBox de tu symbol
+    viewBox="0 0 500 500"
     preserveAspectRatio="xMidYMid meet"
     style="
       width:  var(--holeBase);
       height: var(--holeBase);
       transform:
         translate(calc(-50% + var(--dx)), calc(-50% + var(--dy)))
-        scale(var(--k));
-      transform-origin: 50% 50%;
+        scale(var(--k));              /* scale al final */
+      transform-origin: 50% 50%;      /* centro real */
       overflow: visible;
-	  transform-box: fill-box
     ">
     <use href="#logo-symbol" width="100%" height="100%"></use>
     <use xlink:href="#logo-symbol" width="100%" height="100%"></use>
-  </svg> 
-		
-   <!-- <svg
-    x="50" y="50"    
-    viewBox="0 0 100 100"
-    style="
-      width: var(--holeBase);
-      height: var(--holeBase);
-      transform:(calc(-50% + var(--dx)), calc(-50% + var(--dy)));  
-      overflow: visible;
-		"
-    preserveAspectRatio="xMidYMid meet"
-  >
-    <!-- translate(-50%, -50%) translate(var(--dx), var(--dy)) CONTENEDOR 2: SOLO escala desde el centro 
-    <g style="
-      transform: scale(var(--k));
-      transform-origin: 50% 50%;
-      overflow: visible;
-    ">
-      <!-- transform-box: fill-box; Doble referencia por compatibilidad 
-      <use href="#logo-symbol" width="100%" height="100%"></use> 
-      <use xlink:href="#logo-symbol" width="100%" height="100%"></use>
-    </g>
-  </svg> -->
-		
+  </svg>
 </mask>
-	  
+  
   </defs>
 
-  <!-- Rectángulo negro que cubre todo; el logo NEGRO en la máscara abre el hueco -->
-  <rect x="0" y="0" width="100%" height="100%" style="fill:var(--overlay)" mask="url(#revealMask)"/>
+	<rect x="0" y="0" width="100" height="100" style="fill:var(--overlay)" mask="url(#revealMask)"/>
 	
 </svg>
 
-  <!-- Texto que aparece cuando el logo ya abrió -->
   <div id="headline" aria-hidden="true">
     <h1 class="line">
       <span class="row bebas">Barrio Perro:</span><br/>
@@ -384,27 +352,14 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
     </h1>
   </div>
 
-  <!-- (Opcional) Siguiente “pantalla” con efecto reveal
-  <section class="section">
-    <h2 class="reveal">
-      Barrio Perro es más que una tienda: es un refugio natural para perros urbanos.
-    </h2>
-  </section>
-  -->
-
 <script>
 (function(){
   // --- Diales por dispositivo ---
   const isMobile = matchMedia("(max-width:1024px)").matches || innerHeight < 720;
 
-  let MIN   = 0.62;   // desktop: nace un poco más chico (cabe completo)
+  let MIN   = isMobile ? 0.60 : 0.70;  // nace más chico = 0.62;   // desktop: nace un poco más chico (cabe completo)
   let MAX   = 12.0;   // súbelo si quieres que se salga más
-  let SPEED = 0.009;  // base desktop (se afina abajo)
-
-  if (isMobile){
-    MIN   = 0.50;     // móvil: aún más chico
-    MAX   = 12.0;
-    SPEED = 0.012;    // móvil: abre con menos scroll útil
+  let SPEED = isMobile ? 0.012 : 0.009; //= 0.009;  // base desktop (se afina abajo)
   }
 
   const OPEN_EPS = 0.05;
@@ -414,8 +369,10 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
   // Ajuste automático: queremos que el hueco visible AL CARGAR tenga este tamaño (en vmin)
   const FIT = isMobile ? 10 : 12;
   function fitHoleBase(){
-    // visible = --holeBase * MIN  => --holeBase = FIT / MIN
-    root.style.setProperty('--holeBase', (FIT / MIN).toFixed(3) + 'vmin');
+    document.documentElement.style.setProperty('--holeBase', (FIT / MIN).toFixed(3) + 'vmin');
+	// visible = --holeBase * MIN  => --holeBase = FIT / MIN
+    //root.style.setProperty('--holeBase', (FIT / MIN).toFixed(3) + 'vmin');
+	  
   }
 
   // Helpers
