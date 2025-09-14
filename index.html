@@ -30,7 +30,7 @@ html, body{
   background: #000;
   width: 100%;
   min-height: 100dvh;
-  height: var(--docH, 360vh);  /*fallback si JS no corre */
+  height: var(--docH, 480vh);  /*fallback si JS no corre */
   overflow-x: hidden;
 }	  
    /* html, body{
@@ -354,32 +354,28 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
 	
 <script>
 (function(){
+  // Diales por dispositivo
   const isMobile = matchMedia("(max-width:1024px)").matches || innerHeight < 720;
 
-  let MIN   = isMobile ? 0.60 : 0.68;   // nace pequeño
-  let MAX   = 12.0;
-  let SPEED = isMobile ? 0.012 : 0.009; // se recalibra con el scroll real
+  let MIN   = isMobile ? 0.60 : 0.68;   // nace pequeño (ajusta si quieres)
+  let MAX   = 12.0;                     // hasta dónde abre
+  let SPEED = isMobile ? 0.014 : 0.010; // base, se recalibra abajo
 
   const OPEN_EPS = 0.05;
   const root     = document.documentElement;
   const overlay  = document.getElementById('overlay');
 
-  // tamaño visible inicial del hueco (en vmin)
-  const FIT = isMobile ? 8 : 10;
+  // Tamaño visible inicial deseado del hueco (en vmin)
+  const FIT = isMobile ? 8 : 10;        // si al cargar lo ves grande, baja 1–2 puntos
+
   function fitHoleBase(){
-    root.style.setProperty('--holeBase', hb);
+    // visible_inicial = --holeBase * MIN  ⇒  --holeBase = FIT / MIN
+    root.style.setProperty('--holeBase', (FIT / MIN).toFixed(3) + 'vmin');
   }
 
   const clamp = (v,a,b)=> Math.max(a, Math.min(b, v));
- 
-	function applyDocH(){
-    const yNeeded = (MAX - MIN) / SPEED;                   // px de scroll requeridos
-    const vhNeeded = 100 + (yNeeded / innerHeight) * 100;  // pásalo a vh
-    const fudge = (top !== self || innerHeight < 720) ? 1.08 : 1.04; // Wix/iframe
-    root.style.setProperty('--docH', Math.ceil(vhNeeded * fudge) + 'vh');
-  }
 
-  // velocidad basada en el scroll disponible (~80% del recorrido)
+  // Recalibra velocidad al scroll disponible (~abre sobre el 80% del recorrido)
   function recomputeSpeed(){
     const doc = document.documentElement;
     const scrollRange = Math.max(1, doc.scrollHeight - innerHeight);
@@ -387,27 +383,39 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
     SPEED = (MAX - MIN) / target;
   }
 
+  // 💡 Calcula la altura necesaria para llegar desde MIN hasta MAX
+  function applyDocH(){
+    const yNeeded = (MAX - MIN) / SPEED;                   // píxeles de scroll requeridos
+    const vhNeeded = 100 + (yNeeded / innerHeight) * 100;  // pásalo a vh
+    const fudge = (top !== self || innerHeight < 720) ? 1.08 : 1.04; // Wix/iframe/iOS
+    root.style.setProperty('--docH', Math.ceil(vhNeeded * fudge) + 'vh');
+  }
+
   function onScroll(){
     const y = scrollY || document.documentElement.scrollTop || 0;
     const k = clamp(MIN + y * SPEED, MIN, MAX);
     root.style.setProperty('--k', String(k));
+
     const opened = (k >= MAX - OPEN_EPS);
     if (overlay) overlay.style.opacity = opened ? '0' : '1';
     document.body.classList.toggle('open', opened);
   }
 
-  // init
-  fitHoleBase();
-  recomputeSpeed();
-  onScroll();
+  // 🔧 Orden correcto de init (dos pasadas para estabilidad)
+  fitHoleBase();     // 1) fija tamaño inicial del hueco
+  recomputeSpeed();  // 2) estima velocidad con la altura actual
+  applyDocH();       // 3) da altura suficiente
+  recomputeSpeed();  // 4) re-calibra velocidad con la nueva altura
+  applyDocH();       // 5) afina altura final
+  onScroll();        // 6) pinta estado inicial
 
-  // listeners
+  // Listeners
   addEventListener('scroll', onScroll, { passive:true });
-  addEventListener('resize', ()=>{ fitHoleBase(); recomputeSpeed(); onScroll(); });
-  addEventListener('orientationchange', ()=>{ fitHoleBase(); recomputeSpeed(); onScroll(); });
+  addEventListener('resize', ()=>{ fitHoleBase(); recomputeSpeed(); applyDocH(); onScroll(); });
+  addEventListener('orientationchange', ()=>{ fitHoleBase(); recomputeSpeed(); applyDocH(); onScroll(); });
   addEventListener('load', ()=>{ fitHoleBase(); recomputeSpeed(); applyDocH(); onScroll(); });
 
-  // debug opcional
+  // Debug opcional
   console.log('[BarrioPerro] init OK', {isMobile, MIN, MAX, SPEED, FIT});
 })();
 </script>
