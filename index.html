@@ -309,7 +309,7 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
 <mask id="revealMask" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" style="mask-type: luminance">
   <rect x="0" y="0" width="100" height="100" fill="#fff"/>
   <svg
-    x="50" y="50"
+    x="50%" y="50%"
     viewBox="0 0 500 500"
     preserveAspectRatio="xMidYMid slice"
     style="
@@ -344,7 +344,7 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
   // Diales por dispositivo
   const isMobile = matchMedia("(max-width:1024px)").matches || innerHeight < 760;
 
-  let MIN   = isMobile ? 0.60 : 0.64;   // nace pequeño (ajusta si quieres)
+  let MIN   = isMobile ? 0.50 : 0.60;   // nace pequeño (ajusta si quieres)
   let MAX   = 12.0;                     // hasta dónde abre
   let SPEED = isMobile ? 0.014 : 0.010; // base, se recalibra abajo
 
