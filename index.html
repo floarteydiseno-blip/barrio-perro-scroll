@@ -30,7 +30,7 @@ html, body{
   background: #000;
   width: 100%;
   min-height: 100dvh;
-  height: var(--docH, 360vh); /* fallback si JS no corre */
+  height: 480vh;        /* height: var(--docH, 360vh);  fallback si JS no corre */
   overflow-x: hidden;
 }	  
    /* html, body{
@@ -350,7 +350,7 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
       <span class="row lato">Bienestar natural para tu perro, conexión real contigo.</span>
     </h1>
   </div>
-
+	
 <script>
 (function(){
   // --- Diales por dispositivo ---
@@ -419,6 +419,7 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
   addEventListener('load', ()=>{ fitHoleBase(); recomputeSpeed(); applyDocH(); onScroll(); });
 })();
 </script>
+
  
 </body>
 </html>
