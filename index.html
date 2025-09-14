@@ -20,7 +20,7 @@
       --dy: 0vmin;          /* ajuste fino Y LO TENIA EN .15*/
       --k: 1;                 /* escala dinámica (JS) */
 		/* Tamaños de titulares */
---bebasSize: clamp(55px, 12vmax, 420px);
+--bebasSize: clamp(55px, 10vmax, 420px);
 --latoSize: clamp(15px, 5vmin, 120px);
     }
 
@@ -136,12 +136,12 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
     --dy: 0vmin;
 
     /* Titulares grandes estilo portada */
-    --bebasSize: clamp(55px, 12vmax, 420px);
+    --bebasSize: clamp(55px, 10vmax, 420px);
     --latoSize:  clamp(15px, 5vmin, 140px);
   }
 }
 	  /* ====== Ajustes específicos para móvil ====== */
-	  @media (max-width: 1024px){
+	  @media (max-width:1024px){
       :root{
         --holeBase: 10vmin;  	/* logo inicia más grande en móvil */
 		--dx: -0.3vmin;   		/* mueve un poco a la derecha */
@@ -335,7 +335,7 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
   <div id="headline" aria-hidden="true">
     <h1 class="line">
       <!--<span class="row bebas">Barrio Perro:</span><br/>-->
-      <span class="row bebas">Bienestar natural para tu perro, conexión real contigo.</span>
+      <span class="row bebas">Bienestar natural para tu perro, conexión real contigo.</span><br/>
     </h1>
   </div>
 	
@@ -353,10 +353,10 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
   const overlay  = document.getElementById('overlay');
 
   // Tamaño visible inicial deseado del hueco (en vmin)
-  const FIT = isMobile ? 8 : 10;        // si al cargar lo ves grande, baja 1–2 puntos
+  const FIT = isMobile ? 1 : 10;        // si al cargar lo ves grande, baja 1–2 puntos BAJE de 8 a 1 en mobile
 
   function fitHoleBase(){
-    // visible_inicial = --holeBase * MIN  ⇒  --holeBase = FIT / MIN
+    //visible_inicial = --holeBase * MIN  ⇒  --holeBase = FIT / MIN
     root.style.setProperty('--holeBase', (FIT / MIN).toFixed(3) + 'vmin');
   }
 
