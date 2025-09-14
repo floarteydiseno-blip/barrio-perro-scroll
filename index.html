@@ -329,7 +329,7 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
       width:  var(--holeBase);
       height: var(--holeBase);
       transform:
-        translate(calc(-50% + var(--dx)), calc(-50% + var(--dy)))
+        translate(-50%, -50%) translate(var(--dx), var(--dy));
         scale(var(--k));              /* scale al final */
       transform-origin: 50% 50%;      /* centro real */
       overflow: visible;
