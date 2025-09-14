@@ -143,9 +143,9 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
 	  /* ====== Ajustes específicos para móvil ====== */
 	  @media (max-width: 1024px){
       :root{
-        --holeBase: 16vmin;  	/* logo inicia más grande en móvil */
-		--dx: 20vmin;   		/* mueve un poco a la derecha */
-    	--dy: 20vmin;  		/* sube un poco */
+        --holeBase: 10vmin;  	/* logo inicia más grande en móvil */
+		--dx: 0vmin;   		/* mueve un poco a la derecha */
+    	--dy: 0vmin;  		/* sube un poco */
 
 		  /* Bebas muy grande pero contenida por el lado corto */
     --bebasSize: clamp(56px, 14vmin, 340px);
@@ -349,16 +349,16 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
     style="
       width: var(--holeBase);
       height: var(--holeBase);
-      transform: translate(-50%, -50%) translate(var(--dx), var(--dy));  
+      transform:(calc(-50% + var(--dx)), calc(-50% + var(--dy)));  
       overflow: visible;
 		"
     preserveAspectRatio="xMidYMid meet"
   >
-    <!-- CONTENEDOR 2: SOLO escala desde el centro -->
+    <!-- translate(-50%, -50%) translate(var(--dx), var(--dy)) CONTENEDOR 2: SOLO escala desde el centro -->
     <g style="
       transform: scale(var(--k));
       transform-origin: 50% 50%;
-      
+      overflow: visible;
     ">
       <!-- transform-box: fill-box; Doble referencia por compatibilidad -->
       <use href="#logo-symbol" width="100%" height="100%"></use> 
