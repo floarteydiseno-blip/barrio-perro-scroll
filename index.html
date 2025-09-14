@@ -324,7 +324,7 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
   <svg
     x="50" y="50"
     viewBox="0 0 500 500"
-    preserveAspectRatio="xMidYMid slice"
+    preserveAspectRatio="xMidYMid meet"
     style="
       width:  var(--holeBase);
       height: var(--holeBase);
@@ -355,7 +355,7 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
 (function(){
   const isMobile = matchMedia("(max-width:1024px)").matches || innerHeight < 720;
 
-  let MIN   = isMobile ? 0.60 : 0.70;   // nace pequeño
+  let MIN   = isMobile ? 0.40 : 0.50;   // nace pequeño
   let MAX   = 12.0;
   let SPEED = isMobile ? 0.012 : 0.009; // se recalibra con el scroll real
 
@@ -364,7 +364,7 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
   const overlay  = document.getElementById('overlay');
 
   // tamaño visible inicial del hueco (en vmin)
-  const FIT = isMobile ? 10 : 12;
+  const FIT = isMobile ? 8 : 10;
   function fitHoleBase(){
     root.style.setProperty('--holeBase', (FIT / MIN).toFixed(3) + 'vmin');
   }
