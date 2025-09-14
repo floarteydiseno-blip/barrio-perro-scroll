@@ -133,7 +133,7 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
     /* El logo nace más pequeño para que entre completo */
     --holeBase: 12vmin;              /* antes 2.5vmin LO CAMBIE DE 18 A 10*/
     --dx: 0vmin;
-    --dy: 0.15vmin;
+    --dy: 0vmin;
 
     /* Titulares grandes estilo portada */
     --bebasSize: clamp(55px, 12vmax, 420px);
@@ -353,31 +353,25 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
 	
 <script>
 (function(){
-  // --- Diales por dispositivo ---
   const isMobile = matchMedia("(max-width:1024px)").matches || innerHeight < 720;
 
-  let MIN   = isMobile ? 0.60 : 0.70;  // nace más chico = 0.62;   // desktop: nace un poco más chico (cabe completo)
-  let MAX   = 12.0;   // súbelo si quieres que se salga más
-  let SPEED = isMobile ? 0.012 : 0.009; //= 0.009;  // base desktop (se afina abajo)
-  }
+  let MIN   = isMobile ? 0.60 : 0.70;   // nace pequeño
+  let MAX   = 12.0;
+  let SPEED = isMobile ? 0.012 : 0.009; // se recalibra con el scroll real
 
   const OPEN_EPS = 0.05;
   const root     = document.documentElement;
   const overlay  = document.getElementById('overlay');
 
-  // Ajuste automático: queremos que el hueco visible AL CARGAR tenga este tamaño (en vmin)
+  // tamaño visible inicial del hueco (en vmin)
   const FIT = isMobile ? 10 : 12;
   function fitHoleBase(){
-    document.documentElement.style.setProperty('--holeBase', (FIT / MIN).toFixed(3) + 'vmin');
-	// visible = --holeBase * MIN  => --holeBase = FIT / MIN
-    //root.style.setProperty('--holeBase', (FIT / MIN).toFixed(3) + 'vmin');
-	  
+    root.style.setProperty('--holeBase', (FIT / MIN).toFixed(3) + 'vmin');
   }
 
-  // Helpers
   const clamp = (v,a,b)=> Math.max(a, Math.min(b, v));
 
-  // Ajusta SPEED al scroll real disponible (~abre al 80% del recorrido)
+  // velocidad basada en el scroll disponible (~80% del recorrido)
   function recomputeSpeed(){
     const doc = document.documentElement;
     const scrollRange = Math.max(1, doc.scrollHeight - innerHeight);
@@ -385,41 +379,29 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
     SPEED = (MAX - MIN) / target;
   }
 
-  // Calcula altura del documento para llegar a MAX
-  function applyDocH(){
-    const yNeeded = (MAX - MIN) / SPEED;                  // píxeles
-    const vhNeeded = 100 + (yNeeded / innerHeight) * 100; // vh
-    const fudge = (top !== self || innerHeight < 720) ? 1.08 : 1.04; // Wix/iframes
-    root.style.setProperty('--docH', Math.ceil(vhNeeded * fudge) + 'vh');
-  }
-
   function onScroll(){
     const y = scrollY || document.documentElement.scrollTop || 0;
     const k = clamp(MIN + y * SPEED, MIN, MAX);
     root.style.setProperty('--k', String(k));
-
-    // Fade del overlay y entrada del titular (si usas #headline)
     const opened = (k >= MAX - OPEN_EPS);
     if (overlay) overlay.style.opacity = opened ? '0' : '1';
     document.body.classList.toggle('open', opened);
   }
 
-  // ---- Init en orden correcto (2 pasadas para estabilidad) ----
-  fitHoleBase();      // 1) ajusta tamaño inicial del hueco para que quepa
-  recomputeSpeed();   // 2) estima velocidad con scroll actual
-  applyDocH();        // 3) da altura suficiente
-  recomputeSpeed();   // 4) re-calcula velocidad con la nueva altura
-  applyDocH();        // 5) y ajusta altura fina
-  onScroll();         // 6) pinta estado inicial
+  // init
+  fitHoleBase();
+  recomputeSpeed();
+  onScroll();
 
-  // ---- Listeners ----
+  // listeners
   addEventListener('scroll', onScroll, { passive:true });
-  addEventListener('resize', ()=>{ fitHoleBase(); recomputeSpeed(); applyDocH(); onScroll(); });
-  addEventListener('orientationchange', ()=>{ fitHoleBase(); recomputeSpeed(); applyDocH(); onScroll(); });
-  addEventListener('load', ()=>{ fitHoleBase(); recomputeSpeed(); applyDocH(); onScroll(); });
+  addEventListener('resize', ()=>{ fitHoleBase(); recomputeSpeed(); onScroll(); });
+  addEventListener('orientationchange', ()=>{ fitHoleBase(); recomputeSpeed(); onScroll(); });
+
+  // debug opcional
+  console.log('[BarrioPerro] init OK', {isMobile, MIN, MAX, SPEED, FIT});
 })();
 </script>
-
  
 </body>
 </html>
