@@ -26,9 +26,9 @@
 
 /* Altura del documento controlada por JS (con fallback) */
 html, body{
-  margin: 0 auto;
+  margin: 0;
   background: #000;
-  width: 100;
+  width: 100%;
   min-height: 100dvh;
   height: var(--docH, 480vh);  /*fallback si JS no corre */
   overflow-x: hidden;
@@ -73,7 +73,7 @@ z-index: 3; display: grid; place-items: center;
 pointer-events: none; padding: 0 5vw; text-align: justify;
 }
 #headline .line{
-margin: 0; color: #fff; line-height: 1;
+margin: 0; color: #fff; line-height: .80;
 opacity: 0; transform: translateY(12vh);
 transition: transform .7s cubic-bezier(.2,.7,0,.99), opacity .6s ease;
 }
@@ -144,8 +144,8 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
 	  @media (max-width: 1024px){
       :root{
         --holeBase: 10vmin;  	/* logo inicia más grande en móvil */
-		--dx: 0vmin;   		/* mueve un poco a la derecha */
-    	--dy: 0vmin;  		/* sube un poco */
+		--dx: -0.3vmin;   		/* mueve un poco a la derecha */
+    	--dy: -0.3vmin;  		/* sube un poco */
 
 		  /* Bebas muy grande pero contenida por el lado corto */
     --bebasSize: clamp(56px, 14vmin, 340px);
@@ -157,8 +157,8 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
   :root{
     --holeBase: 7vmin;
   }
-}
-      #headline{ padding: 0 6vw; }
+
+     #headline{ padding: 0 6vw; }
       #headline .line{
         font-size: clamp(48px, 16vmin, 200px);
         line-height: 1.12;
@@ -166,8 +166,8 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
       .lato{
         font-size: 0.95em;
         line-height: 1.35;
-      }
-	  
+	  }}
+	 
     /* ====== XL DESKTOP (monitores grandes) ====== */
 @media (min-width: 1600px){
   :root{
@@ -179,21 +179,8 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
     --latoSize:  clamp(32px, 8vmin, 220px);
   }
 }
-	  /* Toggle de rectángulos por viewport: desktop vs móvil */
-#rectDesktop { display:block; }
-#rectMobile  { display:none; }
-
-@media (max-width: 1024px){
-  #rectDesktop { display:none; }
-  #rectMobile  { display:block; }
-  :root{
-    /* si hiciera falta, pequeño ajuste solo móvil */
-    --dx: 0vmin;
-    --dy: 0vmin;
-  }
-}
-
-	 </style>
+	
+      </style>
 	</head>
 <body>
 
@@ -324,7 +311,7 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
   <svg
     x="50" y="50"
     viewBox="0 0 500 500"
-    preserveAspectRatio="xMidYMid meet"
+    preserveAspectRatio="xMidYMid slice"
     style="
       width:  var(--holeBase);
       height: var(--holeBase);
@@ -347,8 +334,8 @@ body.open #headline .line{ opacity: 1; transform: translateY(0); }
 
   <div id="headline" aria-hidden="true">
     <h1 class="line">
-      <span class="row bebas">Barrio Perro:</span><br/>
-      <span class="row lato">Bienestar natural para tu perro, conexión real contigo.</span>
+      <!--<span class="row bebas">Barrio Perro:</span><br/>-->
+      <span class="row bebas">Bienestar natural para tu perro, conexión real contigo.</span>
     </h1>
   </div>
 	
