@@ -73,19 +73,19 @@ z-index: 3; display: grid; place-items: center;
 pointer-events: none; padding: 0 5vw; text-align: center;
 }
 #headline .line{
-margin: 0; color: #fff; line-height: .80;
+margin: 0; color: #fff; line-height: .85;
 opacity: 0; transform: translateY(12vh);
 transition: transform .7s cubic-bezier(.2,.7,0,.99), opacity .6s ease;
 }
 #headline .bebas{
 font-family: "Oswald", sans-serif !important;
 font-weight: 300 !important;
-font-size: var(--bebasSize); line-height: .80; letter-spacing: .02em; text-transform: uppercase;
+font-size: var(--bebasSize); line-height: .85; letter-spacing: .02em; text-transform: uppercase;
 }
 #headline .lato{
 font-family: "Lato", sans-serif; display: inline-block;
 font-size: var(--latoSize); line-height: .90; letter-spacing: .015em;
-margin-top: -0.10em; /* acerca ambas líneas; ajusta entre -0.10em y -0.30em */	
+margin-top: -0.5em; /* acerca ambas líneas; ajusta entre -0.10em y -0.30em */	
 /*word-spacing: 0.1em;*/
 }
 body.open #headline .line{ opacity: 1; transform: translateY(0); }
